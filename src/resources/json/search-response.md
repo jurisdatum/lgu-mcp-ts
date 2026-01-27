@@ -32,11 +32,13 @@ Each document in the results array has these fields:
   - Use this with `get_legislation` tool
   - See `types://guide` for complete list of type codes
 
-- **year** (string) - Year of enactment or making
-  - Example: `"2026"`
+- **year** (number) - Year of enactment or making
+  - Example: `2026`
+  - Extracted from `<ukm:Year>` element
 
-- **number** (string) - Legislation number
-  - Example: `"3"`
+- **number** (number) - Legislation number
+  - Example: `3`
+  - Extracted from `<ukm:Number>` element
 
 - **title** (string) - Human-readable title
   - Example: `"Holocaust Memorial Act 2026"`
@@ -57,16 +59,16 @@ Each document in the results array has these fields:
     {
       "id": "ukpga/2026/3",
       "type": "ukpga",
-      "year": "2026",
-      "number": "3",
+      "year": 2026,
+      "number": 3,
       "title": "Holocaust Memorial Act 2026",
       "date": "2026-01-22"
     },
     {
       "id": "ukpga/2021/24",
       "type": "ukpga",
-      "year": "2021",
-      "number": "24",
+      "year": 2021,
+      "number": 24,
       "title": "Fire Safety Act 2021",
       "date": "2021-04-29"
     }
@@ -83,11 +85,11 @@ To retrieve the full document for a search result:
 {
   "id": "ukpga/2026/3",
   "type": "ukpga",
-  "year": "2026",
-  "number": "3"
+  "year": 2026,
+  "number": 3
 }
 
-// Use with get_legislation
+// Use with get_legislation (converts to strings)
 get_legislation(type="ukpga", year="2026", number="3")
 ```
 

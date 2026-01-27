@@ -29,8 +29,8 @@ export interface LegislationMetadata {
   // Identification
   id: string;            // e.g., "ukpga/2020/2"
   type: string;          // e.g., "ukpga"
-  year: string;
-  number: string;
+  year: number;          // e.g., 2020
+  number: number;        // e.g., 2
   title: string;
 
   // Geographical extent
@@ -102,16 +102,18 @@ export class MetadataParser {
     return typeMetadata?.DocumentClassification?.DocumentMainType?.['@_Value'] || '';
   }
 
-  private extractYear(legislation: any): string {
+  private extractYear(legislation: any): number {
     const metadata = legislation?.Metadata;
     const typeMetadata = metadata?.PrimaryMetadata || metadata?.SecondaryMetadata || metadata?.EUMetadata;
-    return typeMetadata?.Year?.['@_Value'] || '';
+    const value = typeMetadata?.Year?.['@_Value'];
+    return value ? parseInt(value, 10) : 0;
   }
 
-  private extractNumber(legislation: any): string {
+  private extractNumber(legislation: any): number {
     const metadata = legislation?.Metadata;
     const typeMetadata = metadata?.PrimaryMetadata || metadata?.SecondaryMetadata || metadata?.EUMetadata;
-    return typeMetadata?.Number?.['@_Value'] || '';
+    const value = typeMetadata?.Number?.['@_Value'];
+    return value ? parseInt(value, 10) : 0;
   }
 
   private extractTitle(legislation: any): string {

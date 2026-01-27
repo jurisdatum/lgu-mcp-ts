@@ -18,11 +18,13 @@ This tool returns structured metadata for a specific piece of legislation, parse
   - Use this with `get_legislation` tool
   - See `types://guide` for complete list of type codes
 
-- **year** (string) - Year of enactment or making
-  - Example: `"2020"`
+- **year** (number) - Year of enactment or making
+  - Example: `2020`
+  - Extracted from `<ukm:Year>` element (calendar year, not regnal year)
 
-- **number** (string) - Legislation number
-  - Example: `"2"`
+- **number** (number) - Legislation number
+  - Example: `2`
+  - Extracted from `<ukm:Number>` element
 
 - **title** (string) - Human-readable title
   - Example: `"Direct Payments to Farmers (Legislative Continuity) Act 2020"`
@@ -68,8 +70,8 @@ This tool returns structured metadata for a specific piece of legislation, parse
 {
   "id": "ukpga/2020/2",
   "type": "ukpga",
-  "year": "2020",
-  "number": "2",
+  "year": 2020,
+  "number": 2,
   "title": "Direct Payments to Farmers (Legislative Continuity) Act 2020",
   "extent": ["E", "W", "S", "NI"],
   "enactmentDate": "2020-01-22"
@@ -82,8 +84,8 @@ This tool returns structured metadata for a specific piece of legislation, parse
 {
   "id": "uksi/2020/1234",
   "type": "uksi",
-  "year": "2020",
-  "number": "1234",
+  "year": 2020,
+  "number": 1234,
   "title": "The Example Regulations 2020",
   "extent": ["E", "W"],
   "madeDate": "2020-12-15"

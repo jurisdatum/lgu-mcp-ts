@@ -20,10 +20,10 @@ Returns clean JSON by default with an array of matching documents. Set format="x
 Returned fields (JSON format):
 - id: Simplified identifier (e.g., "ukpga/2021/24")
 - type: Legislation type code (e.g., "ukpga")
-- year: Year of enactment/making
-- number: Legislation number
+- year: Year of enactment/making (number, e.g., 2021)
+- number: Legislation number (number, e.g., 24)
 - title: Human-readable title
-- date: Creation date (optional)
+- date: Creation date (optional, e.g., "2021-04-29")
 
 Search parameters:
 - title: Search in legislation titles (e.g., "theft", "coronavirus")

@@ -20,8 +20,8 @@ This is more efficient than fetching the full document when you only need metada
 Returned fields:
 - id: Simplified identifier (e.g., "ukpga/2020/2")
 - type: Legislation type code (e.g., "ukpga")
-- year: Year of enactment/making
-- number: Legislation number
+- year: Year of enactment/making (number, e.g., 2020)
+- number: Legislation number (number, e.g., 2)
 - title: Human-readable title
 - extent: Geographical extent as array (e.g., ["E", "W", "S", "NI"])
 - enactmentDate/madeDate: Key dates in YYYY-MM-DD format

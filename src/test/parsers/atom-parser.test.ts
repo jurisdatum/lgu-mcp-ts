@@ -42,8 +42,8 @@ test('AtomParser parses single entry feed', () => {
   const doc = result.documents[0];
   assert.strictEqual(doc.id, 'ukpga/2026/3', 'Should extract simplified id');
   assert.strictEqual(doc.type, 'ukpga', 'Should extract type code');
-  assert.strictEqual(doc.year, '2026', 'Should extract year');
-  assert.strictEqual(doc.number, '3', 'Should extract number');
+  assert.strictEqual(doc.year, 2026, 'Should extract year as number');
+  assert.strictEqual(doc.number, 3, 'Should extract number as number');
   assert.strictEqual(doc.title, 'Holocaust Memorial Act 2026', 'Should extract title');
   assert.strictEqual(doc.date, '2026-01-22', 'Should extract creation date');
 });
@@ -89,10 +89,14 @@ test('AtomParser handles multiple entries', () => {
 
   assert.strictEqual(result.documents[0].id, 'ukpga/2026/3');
   assert.strictEqual(result.documents[0].type, 'ukpga');
+  assert.strictEqual(result.documents[0].year, 2026);
+  assert.strictEqual(result.documents[0].number, 3);
   assert.strictEqual(result.documents[0].title, 'Holocaust Memorial Act 2026');
 
   assert.strictEqual(result.documents[1].id, 'ukpga/2021/24');
   assert.strictEqual(result.documents[1].type, 'ukpga');
+  assert.strictEqual(result.documents[1].year, 2021);
+  assert.strictEqual(result.documents[1].number, 24);
   assert.strictEqual(result.documents[1].title, 'Fire Safety Act 2021');
 });
 

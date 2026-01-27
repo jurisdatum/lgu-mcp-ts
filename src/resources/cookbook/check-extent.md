@@ -40,8 +40,8 @@ There are two ways to check geographical extent:
     {
       "id": "ukpga/2021/24",
       "type": "ukpga",
-      "year": "2021",
-      "number": "24",
+      "year": 2021,
+      "number": 24,
       "title": "Fire Safety Act 2021",
       "date": "2021-04-29"
     }
@@ -71,8 +71,8 @@ There are two ways to check geographical extent:
 {
   "id": "ukpga/2021/24",
   "type": "ukpga",
-  "year": "2021",
-  "number": "24",
+  "year": 2021,
+  "number": 24,
   "title": "Fire Safety Act 2021",
   "extent": ["E", "W"],
   "enactmentDate": "2021-04-29"

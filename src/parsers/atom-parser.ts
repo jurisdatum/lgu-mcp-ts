@@ -29,8 +29,8 @@ export interface SearchResult {
   // Identification
   id: string;           // e.g., "ukpga/2026/3"
   type: string;         // e.g., "ukpga"
-  year: string;
-  number: string;
+  year: number;         // e.g., 2026
+  number: number;       // e.g., 3
   title: string;
 
   // Date (enacted for primary, made for secondary)
@@ -104,14 +104,16 @@ export class AtomParser {
     return entry.DocumentMainType?.['@_Value'] || '';
   }
 
-  private extractYear(entry: any): string {
+  private extractYear(entry: any): number {
     // <ukm:Year Value="2026"/>
-    return entry.Year?.['@_Value'] || '';
+    const value = entry.Year?.['@_Value'];
+    return value ? parseInt(value, 10) : 0;
   }
 
-  private extractNumber(entry: any): string {
+  private extractNumber(entry: any): number {
     // <ukm:Number Value="3"/>
-    return entry.Number?.['@_Value'] || '';
+    const value = entry.Number?.['@_Value'];
+    return value ? parseInt(value, 10) : 0;
   }
 
   private extractTitle(entry: any): string {
