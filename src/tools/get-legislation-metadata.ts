@@ -1,0 +1,94 @@
+/**
+ * Tool: get_legislation_metadata
+ *
+ * Retrieve structured metadata for a specific piece of UK legislation
+ */
+
+import { LegislationClient } from "../api/legislation-client.js";
+import { MetadataParser } from "../parsers/metadata-parser.js";
+
+export const name = "get_legislation_metadata";
+
+export const description = `Retrieve structured metadata for a specific piece of UK legislation (experimental).
+
+This tool fetches metadata and returns it as clean, structured JSON with key fields extracted.
+This is more efficient than fetching the full document when you only need metadata.
+
+**Experimental Feature**: This tool parses XML metadata into structured JSON to improve AI usability.
+**For usage examples, see: cookbook://check-extent**
+
+Returned fields:
+- uri: legislation.gov.uk URI
+- shortType: Short code (ukpga, uksi, etc.)
+- year: Year of enactment/making
+- number: Legislation number
+- title: Human-readable title
+- extent: Geographical extent as array (e.g., ["E", "W", "S", "NI"])
+- longType: Full type name (e.g., "UnitedKingdomPublicGeneralAct")
+
+Common legislation types:
+- ukpga: UK Public General Acts (Acts of Parliament)
+- uksi: UK Statutory Instruments (secondary legislation)
+- ukla: UK Local Acts
+- asp: Acts of the Scottish Parliament
+- anaw: Acts of the National Assembly for Wales
+- asc: Acts of Senedd Cymru (Welsh Parliament)
+- nia: Northern Ireland Acts
+
+Examples:
+- get_legislation_metadata(type="ukpga", year="2020", number="2") → Metadata for Direct Payments to Farmers Act 2020
+- get_legislation_metadata(type="ukpga", year="2021", number="24") → Metadata for Fire Safety Act 2021
+- get_legislation_metadata(type="ukpga", year="2020", number="2", version="2024-01-01") → Metadata as it stood on 1 Jan 2024
+
+The version parameter allows point-in-time queries to see metadata as it stood on a specific date.`;
+
+export const inputSchema = {
+  type: "object",
+  properties: {
+    type: {
+      type: "string",
+      description: "Type of legislation (e.g., ukpga, uksi, asp, ukla)",
+    },
+    year: {
+      type: "string",
+      description: "Year of enactment (e.g., 2020)",
+    },
+    number: {
+      type: "string",
+      description: "Legislation number (e.g., 2, 1234)",
+    },
+    version: {
+      type: "string",
+      description: "Optional: Point-in-time date (YYYY-MM-DD) to retrieve metadata as it stood on that date",
+    },
+  },
+  required: ["type", "year", "number"],
+};
+
+export async function execute(
+  args: {
+    type: string;
+    year: string;
+    number: string;
+    version?: string;
+  },
+  client: LegislationClient
+) {
+  const { type, year, number, version } = args;
+
+  // Fetch metadata XML
+  const xml = await client.getDocumentMetadata(type, year, number, { version });
+
+  // Parse to structured JSON
+  const parser = new MetadataParser();
+  const metadata = parser.parse(xml);
+
+  return {
+    content: [
+      {
+        type: "text",
+        text: JSON.stringify(metadata, null, 2)
+      }
+    ]
+  };
+}

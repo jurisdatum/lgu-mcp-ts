@@ -1,0 +1,222 @@
+{
+  "types": [
+    {
+      "shortCode": "ukpga",
+      "longName": "UnitedKingdomPublicGeneralAct",
+      "category": "primary",
+      "description": "UK Public General Acts - Acts of the UK Parliament"
+    },
+    {
+      "shortCode": "ukla",
+      "longName": "UnitedKingdomLocalAct",
+      "category": "primary",
+      "description": "UK Local Acts - Acts applying to specific localities"
+    },
+    {
+      "shortCode": "ukppa",
+      "longName": "UnitedKingdomPrivateOrPersonalAct",
+      "category": "primary",
+      "description": "UK Private or Personal Acts"
+    },
+    {
+      "shortCode": "asp",
+      "longName": "ScottishAct",
+      "category": "primary",
+      "description": "Acts of the Scottish Parliament"
+    },
+    {
+      "shortCode": "nia",
+      "longName": "NorthernIrelandAct",
+      "category": "primary",
+      "description": "Northern Ireland Assembly Acts"
+    },
+    {
+      "shortCode": "aosp",
+      "longName": "ScottishOldAct",
+      "category": "primary",
+      "description": "Old Scottish Acts (pre-1707)"
+    },
+    {
+      "shortCode": "aep",
+      "longName": "EnglandAct",
+      "category": "primary",
+      "description": "Old English Acts (pre-1707)"
+    },
+    {
+      "shortCode": "aip",
+      "longName": "IrelandAct",
+      "category": "primary",
+      "description": "Old Irish Acts (pre-1800)"
+    },
+    {
+      "shortCode": "apgb",
+      "longName": "GreatBritainAct",
+      "category": "primary",
+      "description": "Acts of Great Britain (1707-1800)"
+    },
+    {
+      "shortCode": "gbla",
+      "longName": "GreatBritainLocalAct",
+      "category": "primary",
+      "description": "Great Britain Local Acts (1707-1800)"
+    },
+    {
+      "shortCode": "gbppa",
+      "longName": "GreatBritainPrivateOrPersonalAct",
+      "category": "primary",
+      "description": "Great Britain Private or Personal Acts (1707-1800)"
+    },
+    {
+      "shortCode": "anaw",
+      "longName": "WelshNationalAssemblyAct",
+      "category": "primary",
+      "description": "Acts of the National Assembly for Wales"
+    },
+    {
+      "shortCode": "asc",
+      "longName": "WelshParliamentAct",
+      "category": "primary",
+      "description": "Acts of Senedd Cymru (Welsh Parliament)"
+    },
+    {
+      "shortCode": "mwa",
+      "longName": "WelshAssemblyMeasure",
+      "category": "primary",
+      "description": "Measures of the National Assembly for Wales"
+    },
+    {
+      "shortCode": "ukcm",
+      "longName": "UnitedKingdomChurchMeasure",
+      "category": "primary",
+      "description": "UK Church Measures"
+    },
+    {
+      "shortCode": "mnia",
+      "longName": "NorthernIrelandAssemblyMeasure",
+      "category": "primary",
+      "description": "Northern Ireland Assembly Measures"
+    },
+    {
+      "shortCode": "apni",
+      "longName": "NorthernIrelandParliamentAct",
+      "category": "primary",
+      "description": "Acts of the old Northern Ireland Parliament (1921-1972)"
+    },
+    {
+      "shortCode": "uksi",
+      "longName": "UnitedKingdomStatutoryInstrument",
+      "category": "secondary",
+      "description": "UK Statutory Instruments - delegated legislation"
+    },
+    {
+      "shortCode": "ukmd",
+      "longName": "UnitedKingdomMinisterialDirection",
+      "category": "secondary",
+      "description": "UK Ministerial Directions"
+    },
+    {
+      "shortCode": "ukmo",
+      "longName": "UnitedKingdomMinisterialOrder",
+      "category": "secondary",
+      "description": "UK Ministerial Orders"
+    },
+    {
+      "shortCode": "uksro",
+      "longName": "UnitedKingdomStatutoryRuleOrOrder",
+      "category": "secondary",
+      "description": "UK Statutory Rules and Orders (pre-1948)"
+    },
+    {
+      "shortCode": "wsi",
+      "longName": "WelshStatutoryInstrument",
+      "category": "secondary",
+      "description": "Welsh Statutory Instruments"
+    },
+    {
+      "shortCode": "ssi",
+      "longName": "ScottishStatutoryInstrument",
+      "category": "secondary",
+      "description": "Scottish Statutory Instruments"
+    },
+    {
+      "shortCode": "nisi",
+      "longName": "NorthernIrelandOrderInCouncil",
+      "category": "secondary",
+      "description": "Northern Ireland Orders in Council"
+    },
+    {
+      "shortCode": "nisr",
+      "longName": "NorthernIrelandStatutoryRule",
+      "category": "secondary",
+      "description": "Northern Ireland Statutory Rules"
+    },
+    {
+      "shortCode": "ukci",
+      "longName": "UnitedKingdomChurchInstrument",
+      "category": "secondary",
+      "description": "UK Church Instruments"
+    },
+    {
+      "shortCode": "nisro",
+      "longName": "NorthernIrelandStatutoryRuleOrOrder",
+      "category": "secondary",
+      "description": "Northern Ireland Statutory Rules and Orders (pre-1974)"
+    },
+    {
+      "shortCode": "ukdsi",
+      "longName": "UnitedKingdomDraftStatutoryInstrument",
+      "category": "secondary",
+      "description": "UK Draft Statutory Instruments (not yet in force)"
+    },
+    {
+      "shortCode": "sdsi",
+      "longName": "ScottishDraftStatutoryInstrument",
+      "category": "secondary",
+      "description": "Scottish Draft Statutory Instruments (not yet in force)"
+    },
+    {
+      "shortCode": "nidsr",
+      "longName": "NorthernIrelandDraftStatutoryRule",
+      "category": "secondary",
+      "description": "Northern Ireland Draft Statutory Rules (not yet in force)"
+    },
+    {
+      "shortCode": "eur",
+      "longName": "EuropeanUnionRegulation",
+      "category": "euretained",
+      "description": "EU Regulations retained in UK law"
+    },
+    {
+      "shortCode": "eudn",
+      "longName": "EuropeanUnionDecision",
+      "category": "euretained",
+      "description": "EU Decisions retained in UK law"
+    },
+    {
+      "shortCode": "eudr",
+      "longName": "EuropeanUnionDirective",
+      "category": "euretained",
+      "description": "EU Directives retained in UK law"
+    },
+    {
+      "shortCode": "eut",
+      "longName": "EuropeanUnionTreaty",
+      "category": "euretained",
+      "description": "EU Treaties"
+    }
+  ],
+  "categories": {
+    "primary": {
+      "name": "Primary Legislation",
+      "description": "Acts of Parliament and devolved legislatures. These are the main laws passed by legislative bodies with full law-making powers."
+    },
+    "secondary": {
+      "name": "Secondary Legislation",
+      "description": "Delegated or subordinate legislation made under powers granted by primary legislation. Also known as statutory instruments, regulations, or orders."
+    },
+    "euretained": {
+      "name": "EU Retained Law",
+      "description": "European Union legislation that was retained in UK law following Brexit under the European Union (Withdrawal) Act 2018."
+    }
+  }
+}

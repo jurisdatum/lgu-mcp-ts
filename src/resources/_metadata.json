@@ -1,0 +1,26 @@
+{
+  "namespaces": {
+    "guide": {
+      "name": "Getting Started Guides",
+      "description": "Introductory guides for using the legislation.gov.uk MCP server"
+    },
+    "clml": {
+      "name": "CLML (Crown Legislation Markup Language)",
+      "description": "Resources about parsing UK legislation XML in CLML format"
+    },
+    "atom": {
+      "name": "Atom Feed Format",
+      "description": "Resources about parsing search results in Atom feed format"
+    },
+    "types": {
+      "name": "Legislation Types",
+      "description": "Reference information about UK legislation types and codes"
+    }
+  },
+  "resources": {
+    "clml://metadata/extent": {
+      "name": "Geographical Extent in CLML",
+      "description": "Understanding restrictExtent attributes and territorial application of UK legislation"
+    }
+  }
+}
