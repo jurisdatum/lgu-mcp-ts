@@ -1,0 +1,126 @@
+/**
+ * Parser for Atom feed search results
+ *
+ * Converts Atom XML search results to clean JSON arrays.
+ * This is an experimental feature to improve AI agent usability.
+ */
+
+import { XMLParser } from 'fast-xml-parser';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+// Load types data for longName -> shortCode mapping
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const typesDataPath = join(__dirname, '..', 'resources', 'types', 'data.json');
+const typesData = JSON.parse(readFileSync(typesDataPath, 'utf-8'));
+
+// Build lookup map: longName -> shortCode
+const longToShortTypeMap = new Map<string, string>();
+for (const type of typesData.types) {
+  longToShortTypeMap.set(type.longName, type.shortCode);
+}
+
+/**
+ * A single search result from legislation.gov.uk
+ */
+export interface SearchResult {
+  // Identification
+  id: string;           // e.g., "ukpga/2026/3"
+  type: string;         // e.g., "ukpga"
+  year: string;
+  number: string;
+  title: string;
+
+  // Date (enacted for primary, made for secondary)
+  date?: string;        // YYYY-MM-DD format
+}
+
+/**
+ * Search response envelope
+ */
+export interface SearchResponse {
+  // TODO: Add meta field for pagination (itemsPerPage, startIndex, page, morePages)
+  documents: SearchResult[];
+}
+
+export class AtomParser {
+  private parser: XMLParser;
+
+  constructor() {
+    this.parser = new XMLParser({
+      ignoreAttributes: false,
+      attributeNamePrefix: '@_',
+      removeNSPrefix: true  // Strip atom:, ukm:, dc:, etc. prefixes
+    });
+  }
+
+  /**
+   * Parse Atom feed XML into search response
+   */
+  parse(xml: string): SearchResponse {
+    const obj = this.parser.parse(xml);
+
+    // Debug: uncomment to see full structure
+    // console.error(JSON.stringify(obj, null, 2));
+
+    const feed = obj.feed;
+    if (!feed) {
+      throw new Error('Unable to find feed element in Atom XML');
+    }
+
+    // Handle both single entry and array of entries
+    const entries = feed.entry ? (Array.isArray(feed.entry) ? feed.entry : [feed.entry]) : [];
+
+    const documents = entries.map((entry: any) => {
+      const longType = this.extractLongType(entry);
+      const shortType = longToShortTypeMap.get(longType) || '';
+
+      return {
+        id: this.extractId(entry),
+        type: shortType,
+        year: this.extractYear(entry),
+        number: this.extractNumber(entry),
+        title: this.extractTitle(entry),
+        date: this.extractDate(entry)
+      };
+    });
+
+    return {
+      documents
+    };
+  }
+
+  private extractId(entry: any): string {
+    // <id>http://www.legislation.gov.uk/id/ukpga/2026/3</id>
+    // Strip prefix to get just "ukpga/2026/3"
+    const fullId = entry.id || '';
+    return fullId.replace(/^https?:\/\/www\.legislation\.gov\.uk\/(id\/)?/, '');
+  }
+
+  private extractLongType(entry: any): string {
+    // <ukm:DocumentMainType Value="UnitedKingdomPublicGeneralAct"/>
+    return entry.DocumentMainType?.['@_Value'] || '';
+  }
+
+  private extractYear(entry: any): string {
+    // <ukm:Year Value="2026"/>
+    return entry.Year?.['@_Value'] || '';
+  }
+
+  private extractNumber(entry: any): string {
+    // <ukm:Number Value="3"/>
+    return entry.Number?.['@_Value'] || '';
+  }
+
+  private extractTitle(entry: any): string {
+    // <title>Holocaust Memorial Act 2026</title>
+    return entry.title || '';
+  }
+
+  private extractDate(entry: any): string | undefined {
+    // <ukm:CreationDate Date="2026-01-22"/>
+    return entry.CreationDate?.['@_Date'];
+  }
+}

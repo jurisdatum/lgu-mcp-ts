@@ -12,9 +12,17 @@
       "name": "Atom Feed Format",
       "description": "Resources about parsing search results in Atom feed format"
     },
+    "json": {
+      "name": "JSON Response Formats",
+      "description": "Documentation for experimental JSON response formats (search and metadata)"
+    },
     "types": {
       "name": "Legislation Types",
       "description": "Reference information about UK legislation types and codes"
+    },
+    "cookbook": {
+      "name": "Cookbook Recipes",
+      "description": "Step-by-step workflows for common tasks"
     }
   },
   "resources": {

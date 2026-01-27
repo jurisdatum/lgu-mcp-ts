@@ -26,12 +26,9 @@ for (const type of typesData.types) {
  * Structured metadata extracted from legislation
  */
 export interface LegislationMetadata {
-  // URI
-  uri: string;          // legislation.gov.uk URI
-
-  // Core identification
-  longType: string;      // e.g., "UnitedKingdomPublicGeneralAct"
-  shortType: string;     // Short code (ukpga, uksi, etc.)
+  // Identification
+  id: string;            // e.g., "ukpga/2020/2"
+  type: string;          // e.g., "ukpga"
   year: string;
   number: string;
   title: string;
@@ -80,9 +77,8 @@ export class MetadataParser {
     const shortType = longToShortTypeMap.get(longType) || '';
 
     return {
-      uri: this.extractURI(legislation),
-      longType,
-      shortType,
+      id: this.extractId(legislation),
+      type: shortType,
       year: this.extractYear(legislation),
       number: this.extractNumber(legislation),
       title: this.extractTitle(legislation),
@@ -94,8 +90,10 @@ export class MetadataParser {
     };
   }
 
-  private extractURI(legislation: any): string {
-    return legislation['@_DocumentURI'] || '';
+  private extractId(legislation: any): string {
+    // Strip prefix to get just "ukpga/2020/2"
+    const fullId = legislation['@_DocumentURI'] || '';
+    return fullId.replace(/^https?:\/\/www\.legislation\.gov\.uk\/(id\/)?/, '');
   }
 
   private extractLongType(legislation: any): string {

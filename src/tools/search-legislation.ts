@@ -5,12 +5,25 @@
  */
 
 import { LegislationClient } from "../api/legislation-client.js";
+import { AtomParser } from "../parsers/atom-parser.js";
 
 export const name = "search_legislation";
 
-export const description = `Search for UK legislation by keyword, title, or other criteria.
+export const description = `Search for UK legislation by keyword, title, or other criteria (experimental JSON format).
 
 This tool provides flexible search across all UK legislation hosted on legislation.gov.uk.
+
+Returns clean JSON by default with an array of matching documents. Set format="xml" for raw Atom feed.
+
+**Experimental Feature**: JSON format parses Atom XML into structured results for improved AI usability.
+
+Returned fields (JSON format):
+- id: Simplified identifier (e.g., "ukpga/2021/24")
+- type: Legislation type code (e.g., "ukpga")
+- year: Year of enactment/making
+- number: Legislation number
+- title: Human-readable title
+- date: Creation date (optional)
 
 Search parameters:
 - title: Search in legislation titles (e.g., "theft", "coronavirus")
@@ -18,6 +31,7 @@ Search parameters:
 - type: Filter by legislation type (ukpga, uksi, asp, etc.)
 - year: Filter by specific year
 - startYear/endYear: Filter by year range
+- format: Response format (json or xml, default: json)
 
 Examples:
 - search_legislation(title="theft") → All legislation with "theft" in the title
@@ -25,12 +39,7 @@ Examples:
 - search_legislation(text="data protection", type="ukpga") → Acts containing "data protection"
 - search_legislation(type="uksi", startYear="2020", endYear="2023") → SIs from 2020-2023
 
-Returns an Atom feed (XML format) with matching documents including metadata (title, year, number, citation).
-
-**For help parsing Atom feed results, read the resource at: atom://feed-guide**
-**For help converting document types, read the resource at: types://guide**
-
-Use the type, year, and number from search results with get_legislation to retrieve the full document.`;
+Use the id, type, year, and number from search results with get_legislation to retrieve the full document.`;
 
 export const inputSchema = {
   type: "object",
@@ -59,6 +68,11 @@ export const inputSchema = {
       type: "string",
       description: "End of year range (inclusive)",
     },
+    format: {
+      type: "string",
+      enum: ["json", "xml"],
+      description: "Response format (default: json for structured results, xml for raw Atom feed)",
+    },
   },
 };
 
@@ -70,21 +84,39 @@ export async function execute(
     year?: string;
     startYear?: string;
     endYear?: string;
+    format?: "json" | "xml";
   },
   client: LegislationClient
 ): Promise<any> {
-  try {
-    const results = await client.search(args);
+  const { format = "json", ...searchParams } = args;
 
-    // Results are already in Atom feed XML format
-    return {
-      content: [
-        {
-          type: "text",
-          text: results,
-        },
-      ],
-    };
+  try {
+    const results = await client.search(searchParams);
+
+    // Return JSON by default, XML if explicitly requested
+    if (format === "json") {
+      const parser = new AtomParser();
+      const parsed = parser.parse(results);
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(parsed, null, 2),
+          },
+        ],
+      };
+    } else {
+      // Return raw XML
+      return {
+        content: [
+          {
+            type: "text",
+            text: results,
+          },
+        ],
+      };
+    }
   } catch (error) {
     if (error instanceof Error) {
       return {

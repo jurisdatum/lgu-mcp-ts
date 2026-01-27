@@ -17,8 +17,10 @@ Search for UK legislation by various criteria:
 - `text`: Full-text search across content
 - `type`: Filter by legislation type (ukpga, uksi, etc.)
 - `year`: Filter by year or year range
+- `format`: Response format (json or xml, default: json)
 
-Returns an Atom feed (XML) with search results.
+Returns clean JSON with array of matching documents by default (experimental).
+Set `format="xml"` for raw Atom feed.
 
 ### `get_legislation`
 Retrieve a specific piece of legislation by citation:
@@ -55,15 +57,35 @@ Multi-step procedures for common tasks:
 
 Read these resources to understand UK legislation data structures:
 
+#### JSON Formats (Experimental)
+
+- **`json://search-response`** - Search result format
+  - SearchResponse and SearchResult field documentation
+  - Simplified `id` field format
+  - Complete examples
+
+- **`json://metadata-response`** - Metadata format
+  - LegislationMetadata field documentation
+  - Extent arrays and date fields
+  - Primary vs secondary legislation examples
+
+#### XML Formats
+
 - **`clml://schema-guide`** - How to parse CLML XML documents
   - Document structure, sections, provisions
   - Finding section numbers and headings
   - Common XML patterns
 
-- **`atom://feed-guide`** - How to parse search results
+- **`clml://metadata/extent`** - Geographical extent in CLML
+  - Understanding RestrictExtent attributes
+  - Extent codes and jurisdiction mapping
+
+- **`atom://feed-guide`** - How to parse Atom feed XML
   - Atom feed structure and elements
   - Extracting type/year/number from metadata
   - Link elements and data formats
+
+#### Other References
 
 - **`types://guide`** - Legislation types reference
   - All UK legislation types (primary, secondary, EU retained)

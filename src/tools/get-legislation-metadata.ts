@@ -18,13 +18,13 @@ This is more efficient than fetching the full document when you only need metada
 **For usage examples, see: cookbook://check-extent**
 
 Returned fields:
-- uri: legislation.gov.uk URI
-- shortType: Short code (ukpga, uksi, etc.)
+- id: Simplified identifier (e.g., "ukpga/2020/2")
+- type: Legislation type code (e.g., "ukpga")
 - year: Year of enactment/making
 - number: Legislation number
 - title: Human-readable title
 - extent: Geographical extent as array (e.g., ["E", "W", "S", "NI"])
-- longType: Full type name (e.g., "UnitedKingdomPublicGeneralAct")
+- enactmentDate/madeDate: Key dates in YYYY-MM-DD format
 
 Common legislation types:
 - ukpga: UK Public General Acts (Acts of Parliament)

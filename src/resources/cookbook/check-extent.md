@@ -33,12 +33,25 @@ There are two ways to check geographical extent:
 }
 ```
 
-**What to extract:**
-- Document type (e.g., `ukpga`)
-- Year (e.g., `2021`)
-- Number (e.g., `24`)
+**Result:** Clean JSON with array of matching documents:
+```json
+{
+  "documents": [
+    {
+      "id": "ukpga/2021/24",
+      "type": "ukpga",
+      "year": "2021",
+      "number": "24",
+      "title": "Fire Safety Act 2021",
+      "date": "2021-04-29"
+    }
+  ]
+}
+```
 
-**Resource:** See `atom://feed-guide` for help parsing search results.
+**What to extract:** The `type`, `year`, and `number` fields (or parse them from `id`).
+
+**Resource:** See `json://search-response` for complete field documentation.
 
 ### 2. Get structured metadata
 
@@ -56,9 +69,17 @@ There are two ways to check geographical extent:
 **Result:** Clean JSON with extent already parsed:
 ```json
 {
-  "extent": ["E", "W"]
+  "id": "ukpga/2021/24",
+  "type": "ukpga",
+  "year": "2021",
+  "number": "24",
+  "title": "Fire Safety Act 2021",
+  "extent": ["E", "W"],
+  "enactmentDate": "2021-04-29"
 }
 ```
+
+**Resource:** See `json://metadata-response` for complete field documentation.
 
 ### 3. Check the extent array
 
@@ -74,11 +95,20 @@ Simply check if "S" (Scotland) is in the array:
 
 ### 1. Search for the legislation (same as Approach A)
 
-**Tool:** `search_legislation` with `title: "Fire Safety Act 2021"`
+**Tool:** `search_legislation`
 
-Extract: type, year, number from results
+**Parameters:**
+```json
+{
+  "title": "Fire Safety Act 2021"
+}
+```
 
-**Resource:** See `atom://feed-guide` for help parsing search results.
+**Result:** JSON array of documents (or use `format="xml"` for Atom feed)
+
+Extract `type`, `year`, and `number` from the first matching document.
+
+**Resource:** See `json://search-response` for JSON format or `atom://feed-guide` for XML.
 
 ### 2. Retrieve the full document
 

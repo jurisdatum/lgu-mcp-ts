@@ -71,6 +71,9 @@ npm run build
 
 # Generate resource manifest
 npm run generate-manifest
+
+# Run tests
+npm test
 ```
 
 ## Architecture
