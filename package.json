@@ -1,5 +1,5 @@
 {
-  "name": "@legislation-uk/mcp-server",
+  "name": "@legislation-gov-uk/mcp-server",
   "version": "0.1.0",
   "description": "Model Context Protocol server for UK legislation (legislation.gov.uk)",
   "type": "module",
