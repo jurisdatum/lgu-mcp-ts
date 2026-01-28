@@ -9,7 +9,7 @@ import { MetadataParser } from '../../parsers/metadata-parser.js';
 const SAMPLE_METADATA_XML = `
 <Legislation xmlns="http://www.legislation.gov.uk/namespaces/legislation"
     DocumentURI="http://www.legislation.gov.uk/ukpga/2020/2"
-    RestrictExtent="E+W+S+N.I." RestrictStartDate="2024-01-01">
+    RestrictExtent="E+W+S+N.I.">
     <ukm:Metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dct="http://purl.org/dc/terms/"
         xmlns:ukm="http://www.legislation.gov.uk/namespaces/metadata">
         <dc:identifier>http://www.legislation.gov.uk/ukpga/2020/2</dc:identifier>
@@ -50,8 +50,6 @@ test('MetadataParser parses primary legislation metadata', () => {
   assert.deepStrictEqual(result.extent, ['E', 'W', 'S', 'NI'], 'Should normalize extent (N.I. → NI)');
   assert.strictEqual(result.enactmentDate, '2020-01-30', 'Should extract enactment date');
   assert.strictEqual(result.madeDate, undefined, 'Should not have madeDate for primary legislation');
-  assert.strictEqual(result.startDate, '2024-01-01', 'Should extract start date from RestrictStartDate');
-  assert.strictEqual(result.endDate, undefined, 'Should not have end date if not repealed');
 });
 
 test('MetadataParser handles extent normalization', () => {

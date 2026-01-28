@@ -19,7 +19,7 @@ Search for UK legislation by various criteria:
 - `year`: Filter by year or year range
 - `format`: Response format (json or xml, default: json)
 
-Returns clean JSON with array of matching documents by default (experimental).
+Returns clean JSON with array of matching documents by default.
 Set `format="xml"` for raw Atom feed.
 
 ### `get_legislation`
@@ -33,7 +33,7 @@ Retrieve a specific piece of legislation by citation:
 Returns the full legislation document in the requested format.
 
 ### `get_legislation_metadata`
-Retrieve structured metadata for legislation (experimental):
+Retrieve structured metadata for legislation:
 - `type`: Legislation type short code (ukpga, uksi, asp, etc.)
 - `year`: Year of enactment
 - `number`: Legislation number
@@ -55,16 +55,11 @@ Common workflow recipes available:
   - Step-by-step guide from search to answer
   - Interpreting extent codes
 
-- **`cookbook://in-force-status`** - Check if legislation is in force
-  - "Is this Act currently in force?"
-  - "When did this come into force?"
-  - Document-level status checking with examples
-
 ### Reference Documentation
 
 Read these resources to understand UK legislation data structures:
 
-#### JSON Formats (Experimental)
+#### JSON Formats
 
 - **`json://search-response`** - Search result format
   - SearchResponse and SearchResult field documentation

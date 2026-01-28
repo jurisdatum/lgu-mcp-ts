@@ -9,13 +9,11 @@ import { AtomParser } from "../parsers/atom-parser.js";
 
 export const name = "search_legislation";
 
-export const description = `Search for UK legislation by keyword, title, or other criteria (experimental JSON format).
+export const description = `Search for UK legislation by keyword, title, or other criteria.
 
 This tool provides flexible search across all UK legislation hosted on legislation.gov.uk.
 
 Returns clean JSON by default with an array of matching documents. Set format="xml" for raw Atom feed.
-
-**Experimental Feature**: JSON format parses Atom XML into structured results for improved AI usability.
 
 Returned fields (JSON format):
 - id: Simplified identifier (e.g., "ukpga/2021/24")
@@ -39,7 +37,9 @@ Examples:
 - search_legislation(text="data protection", type="ukpga") → Acts containing "data protection"
 - search_legislation(type="uksi", startYear="2020", endYear="2023") → SIs from 2020-2023
 
-Use the id, type, year, and number from search results with get_legislation to retrieve the full document.`;
+Common workflows:
+- Search → get_legislation to retrieve full document
+- Search → get_legislation_metadata to check geographical extent (see: cookbook://check-extent)`;
 
 export const inputSchema = {
   type: "object",

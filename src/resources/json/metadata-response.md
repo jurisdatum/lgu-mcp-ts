@@ -1,6 +1,6 @@
 # Metadata Response Format
 
-**Experimental JSON format** for `get_legislation_metadata` tool responses.
+JSON format for `get_legislation_metadata` tool responses.
 
 This tool returns structured metadata for a specific piece of legislation, parsed from the underlying XML into clean JSON.
 
@@ -34,8 +34,7 @@ This tool returns structured metadata for a specific piece of legislation, parse
 - **status** (string, optional) - Document version status
   - Values: `"draft"`, `"final"`, `"revised"`, `"proposed"`
   - `"final"` = original published version before editorial processing
-  - `"revised"` = version processed by editorial system (includes in-force metadata)
-  - See `clml://metadata/in-force` for detailed explanation
+  - `"revised"` = version processed by editorial system
 
 ### Geographical Extent
 
@@ -58,25 +57,6 @@ All date fields use **ISO 8601 date format** (YYYY-MM-DD).
   - Format: ISO 8601 date (YYYY-MM-DD)
   - Example: `"2020-12-15"`
 
-### In-Force Status
-
-**Important:** These fields are only present in "revised" versions. If `status` is `"final"`, these fields will be `undefined`.
-
-All date fields use **ISO 8601 date format** (YYYY-MM-DD).
-
-- **startDate** (string, optional) - When legislation came into force
-  - Format: ISO 8601 date (YYYY-MM-DD)
-  - Example: `"2025-01-16"`
-  - Extracted from `RestrictStartDate` attribute on root element
-  - If absent in a "revised" version, legislation is not yet in force
-  - See `clml://metadata/in-force` for complete guidance
-
-- **endDate** (string, optional) - When legislation was repealed or ceased
-  - Format: ISO 8601 date (YYYY-MM-DD)
-  - Example: `"2023-12-31"`
-  - Extracted from `RestrictEndDate` attribute on root element
-  - Present only if legislation has been repealed
-
 ### Additional Metadata
 
 - **isbn** (string, optional) - ISBN for published version
@@ -94,12 +74,11 @@ All date fields use **ISO 8601 date format** (YYYY-MM-DD).
   "title": "Direct Payments to Farmers (Legislative Continuity) Act 2020",
   "status": "revised",
   "extent": ["E", "W", "S", "NI"],
-  "enactmentDate": "2020-01-30",
-  "startDate": "2024-01-01"
+  "enactmentDate": "2020-01-30"
 }
 ```
 
-## Complete Example (Secondary Legislation - Not In Force)
+## Complete Example (Secondary Legislation)
 
 ```json
 {
@@ -113,8 +92,6 @@ All date fields use **ISO 8601 date format** (YYYY-MM-DD).
   "madeDate": "2026-01-06"
 }
 ```
-
-Note: No `startDate` field means this legislation is not yet in force (prospective).
 
 ## Date Field Comparison
 
@@ -143,7 +120,6 @@ get_legislation(type="ukpga", year="2021", number="24")
 
 - `json://search-response` - Search results format
 - `clml://metadata/extent` - Understanding geographical extent
-- `clml://metadata/in-force` - Understanding in-force status and version types
 - `clml://schema-guide` - Full CLML XML structure
 - `types://guide` - Legislation types reference
 - `cookbook://check-extent` - Example workflow using metadata

@@ -43,10 +43,6 @@ export interface LegislationMetadata {
   enactmentDate?: string;   // When enacted (primary legislation)
   madeDate?: string;        // When made (secondary legislation)
 
-  // In-force status (only available in "revised" versions)
-  startDate?: string;    // RestrictStartDate: when legislation came into force
-  endDate?: string;      // RestrictEndDate: when legislation was repealed/ceased
-
   // Additional metadata
   isbn?: string;            // TODO: Extract from metadata
 }
@@ -90,9 +86,7 @@ export class MetadataParser {
       status: this.extractStatus(legislation),
       extent: this.extractExtent(legislation),
       enactmentDate: this.extractEnactmentDate(legislation),
-      madeDate: this.extractMadeDate(legislation),
-      startDate: this.extractStartDate(legislation),
-      endDate: this.extractEndDate(legislation)
+      madeDate: this.extractMadeDate(legislation)
     };
   }
 
@@ -162,13 +156,5 @@ export class MetadataParser {
     const metadata = legislation?.Metadata;
     const typeMetadata = metadata?.PrimaryMetadata || metadata?.SecondaryMetadata || metadata?.EUMetadata;
     return typeMetadata?.DocumentClassification?.DocumentStatus?.['@_Value'];
-  }
-
-  private extractStartDate(legislation: any): string | undefined {
-    return legislation?.['@_RestrictStartDate'];
-  }
-
-  private extractEndDate(legislation: any): string | undefined {
-    return legislation?.['@_RestrictEndDate'];
   }
 }

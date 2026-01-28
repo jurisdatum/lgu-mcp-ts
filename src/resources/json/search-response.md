@@ -1,6 +1,6 @@
 # Search Response Format
 
-**Experimental JSON format** for `search_legislation` tool responses.
+JSON format for `search_legislation` tool responses.
 
 This is the default response format when using the search tool. Set `format="xml"` to get the raw Atom feed instead.
 

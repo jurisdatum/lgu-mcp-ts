@@ -9,13 +9,13 @@ import { MetadataParser } from "../parsers/metadata-parser.js";
 
 export const name = "get_legislation_metadata";
 
-export const description = `Retrieve structured metadata for a specific piece of UK legislation (experimental).
+export const description = `Retrieve structured metadata for a specific piece of UK legislation.
 
 This tool fetches metadata and returns it as clean, structured JSON with key fields extracted.
 This is more efficient than fetching the full document when you only need metadata.
 
-**Experimental Feature**: This tool parses XML metadata into structured JSON to improve AI usability.
-**For usage examples, see: cookbook://check-extent**
+**Usage recipes:**
+- cookbook://check-extent - Check geographical extent
 
 Returned fields:
 - id: Simplified identifier (e.g., "ukpga/2020/2")
@@ -26,8 +26,6 @@ Returned fields:
 - status: Version status ("draft", "final", "revised", "proposed")
 - extent: Geographical extent as array (e.g., ["E", "W", "S", "NI"])
 - enactmentDate/madeDate: Key dates in YYYY-MM-DD format
-- startDate: When legislation came into force (only in "revised" versions)
-- endDate: When legislation was repealed (only if applicable)
 
 Common legislation types:
 - ukpga: UK Public General Acts (Acts of Parliament)

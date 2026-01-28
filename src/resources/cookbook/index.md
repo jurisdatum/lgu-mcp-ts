@@ -20,27 +20,6 @@ Learn how to determine which jurisdictions (England, Wales, Scotland, Northern I
 
 ---
 
-### `cookbook://in-force-status`
-**Check In-Force Status of Legislation**
-
-Determine whether UK legislation is currently in force, prospective (not yet in force), or repealed.
-
-**What you'll learn:**
-- Using `get_legislation_metadata` to check in-force status
-- Interpreting `status`, `startDate`, and `endDate` fields
-- Handling edge cases (very new legislation, repealed legislation)
-
-**Use cases:**
-- "Is this Act in force?"
-- "When did this legislation come into force?"
-- "Has this been repealed?"
-
-**Current limitations:**
-- Document-level only (entire Acts/SIs)
-- Section-level support coming in future version
-
----
-
 ## Recipe Format
 
 Each recipe follows this structure:
