@@ -29,6 +29,14 @@ This tool returns structured metadata for a specific piece of legislation, parse
 - **title** (string) - Human-readable title
   - Example: `"Direct Payments to Farmers (Legislative Continuity) Act 2020"`
 
+### Version Status
+
+- **status** (string, optional) - Document version status
+  - Values: `"draft"`, `"final"`, `"revised"`, `"proposed"`
+  - `"final"` = original published version before editorial processing
+  - `"revised"` = version processed by editorial system (includes in-force metadata)
+  - See `clml://metadata/in-force` for detailed explanation
+
 ### Geographical Extent
 
 - **extent** (array of strings, optional) - Jurisdictions where legislation applies
@@ -40,23 +48,34 @@ This tool returns structured metadata for a specific piece of legislation, parse
 
 ### Important Dates
 
+All date fields use **ISO 8601 date format** (YYYY-MM-DD).
+
 - **enactmentDate** (string, optional) - When the Act received Royal Assent (primary legislation only)
-  - Format: YYYY-MM-DD
+  - Format: ISO 8601 date (YYYY-MM-DD)
   - Example: `"2020-01-22"`
 
 - **madeDate** (string, optional) - When the instrument was made (secondary legislation only)
-  - Format: YYYY-MM-DD
+  - Format: ISO 8601 date (YYYY-MM-DD)
   - Example: `"2020-12-15"`
 
-- **laidDate** (string, optional) - When laid before Parliament (secondary legislation)
-  - Format: YYYY-MM-DD
-  - Status: TODO - Not yet extracted
+### In-Force Status
 
-- **comingIntoForceDates** (array of strings, optional) - When provisions came/come into force
-  - Format: Array of YYYY-MM-DD dates
-  - Example: `["2020-02-01", "2020-04-01"]`
-  - Status: TODO - Not yet extracted
-  - Note: Legislation can have multiple commencement dates for different provisions
+**Important:** These fields are only present in "revised" versions. If `status` is `"final"`, these fields will be `undefined`.
+
+All date fields use **ISO 8601 date format** (YYYY-MM-DD).
+
+- **startDate** (string, optional) - When legislation came into force
+  - Format: ISO 8601 date (YYYY-MM-DD)
+  - Example: `"2025-01-16"`
+  - Extracted from `RestrictStartDate` attribute on root element
+  - If absent in a "revised" version, legislation is not yet in force
+  - See `clml://metadata/in-force` for complete guidance
+
+- **endDate** (string, optional) - When legislation was repealed or ceased
+  - Format: ISO 8601 date (YYYY-MM-DD)
+  - Example: `"2023-12-31"`
+  - Extracted from `RestrictEndDate` attribute on root element
+  - Present only if legislation has been repealed
 
 ### Additional Metadata
 
@@ -64,7 +83,7 @@ This tool returns structured metadata for a specific piece of legislation, parse
   - Example: `"9780105700203"`
   - Status: TODO - Not yet extracted
 
-## Complete Example (Primary Legislation)
+## Complete Example (Primary Legislation - Revised Version)
 
 ```json
 {
@@ -73,24 +92,29 @@ This tool returns structured metadata for a specific piece of legislation, parse
   "year": 2020,
   "number": 2,
   "title": "Direct Payments to Farmers (Legislative Continuity) Act 2020",
+  "status": "revised",
   "extent": ["E", "W", "S", "NI"],
-  "enactmentDate": "2020-01-22"
+  "enactmentDate": "2020-01-30",
+  "startDate": "2024-01-01"
 }
 ```
 
-## Complete Example (Secondary Legislation)
+## Complete Example (Secondary Legislation - Not In Force)
 
 ```json
 {
-  "id": "uksi/2020/1234",
-  "type": "uksi",
-  "year": 2020,
-  "number": 1234,
-  "title": "The Example Regulations 2020",
-  "extent": ["E", "W"],
-  "madeDate": "2020-12-15"
+  "id": "nisr/2026/1",
+  "type": "nisr",
+  "year": 2026,
+  "number": 1,
+  "title": "The Shellfish Gathering (Conservation) Regulations (Northern Ireland) 2026",
+  "status": "revised",
+  "extent": ["NI"],
+  "madeDate": "2026-01-06"
 }
 ```
+
+Note: No `startDate` field means this legislation is not yet in force (prospective).
 
 ## Date Field Comparison
 
@@ -119,6 +143,7 @@ get_legislation(type="ukpga", year="2021", number="24")
 
 - `json://search-response` - Search results format
 - `clml://metadata/extent` - Understanding geographical extent
+- `clml://metadata/in-force` - Understanding in-force status and version types
 - `clml://schema-guide` - Full CLML XML structure
 - `types://guide` - Legislation types reference
 - `cookbook://check-extent` - Example workflow using metadata

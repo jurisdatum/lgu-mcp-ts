@@ -45,7 +45,7 @@ Each document in the results array has these fields:
 
 ### Date Information
 
-- **date** (string, optional) - Creation date in YYYY-MM-DD format
+- **date** (string, optional) - Creation date in ISO 8601 date format (YYYY-MM-DD)
   - For primary legislation: enactment date
   - For secondary legislation: made date
   - Example: `"2026-01-22"`

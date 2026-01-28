@@ -36,10 +36,17 @@ Examples:
 - get_legislation(type="ukpga", year="1968", number="60") → Theft Act 1968 in CLML XML
 - get_legislation(type="uksi", year="2020", number="1234") → Specific SI in CLML XML
 - get_legislation(type="ukpga", year="2020", number="1", version="2023-01-01") → As it stood on 1 Jan 2023
+- get_legislation(type="ukpga", year="2025", number="1", version="enacted") → Original enacted version
 - get_legislation(type="ukpga", year="1968", number="60", format="akn") → Akoma Ntoso XML format
 - get_legislation(type="ukpga", year="1968", number="60", format="html") → HTML rendering
 
-The version parameter allows point-in-time queries to see legislation as it stood on a specific date.`;
+Version parameter:
+- Date (YYYY-MM-DD): Retrieve legislation as it stood on that date
+- "enacted": Original version for UK primary legislation (Acts)
+- "made": Original version for UK secondary legislation (SIs, etc.)
+- "created": Original version for uncommon UK types (e.g., Church Instruments)
+- "adopted": Original version for EU legislation
+- All original versions have status="final" and lack in-force metadata`;
 
 export const inputSchema = {
   type: "object",
@@ -63,7 +70,7 @@ export const inputSchema = {
     },
     version: {
       type: "string",
-      description: "Point-in-time date (YYYY-MM-DD) to retrieve legislation as it stood on that date",
+      description: "Optional: Version to retrieve - either a point-in-time date (YYYY-MM-DD) or a version keyword (enacted, made, created, adopted)",
     },
   },
   required: ["type", "year", "number"],

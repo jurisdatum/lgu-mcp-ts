@@ -33,14 +33,19 @@ export interface LegislationMetadata {
   number: number;        // e.g., 2
   title: string;
 
+  // Version status
+  status?: string;       // "draft", "final", "revised", "proposed"
+
   // Geographical extent
   extent?: string[];     // ["E", "W"], ["E", "W", "S"], ["E", "W", "S", "NI"], etc. (normalized from N.I.)
 
   // Important dates
   enactmentDate?: string;   // When enacted (primary legislation)
   madeDate?: string;        // When made (secondary legislation)
-  laidDate?: string;        // When laid before Parliament (secondary legislation) - TODO: Extract from SecondaryMetadata
-  comingIntoForceDates?: string[];  // When it came/comes into force (can be multiple dates) - TODO: Extract and handle multiple dates
+
+  // In-force status (only available in "revised" versions)
+  startDate?: string;    // RestrictStartDate: when legislation came into force
+  endDate?: string;      // RestrictEndDate: when legislation was repealed/ceased
 
   // Additional metadata
   isbn?: string;            // TODO: Extract from metadata
@@ -82,11 +87,12 @@ export class MetadataParser {
       year: this.extractYear(legislation),
       number: this.extractNumber(legislation),
       title: this.extractTitle(legislation),
+      status: this.extractStatus(legislation),
       extent: this.extractExtent(legislation),
       enactmentDate: this.extractEnactmentDate(legislation),
       madeDate: this.extractMadeDate(legislation),
-      laidDate: undefined,
-      comingIntoForceDates: undefined
+      startDate: this.extractStartDate(legislation),
+      endDate: this.extractEndDate(legislation)
     };
   }
 
@@ -150,5 +156,19 @@ export class MetadataParser {
     // Only SecondaryMetadata has MadeDate
     const typeMetadata = metadata?.SecondaryMetadata;
     return typeMetadata?.MadeDate?.['@_Date'];
+  }
+
+  private extractStatus(legislation: any): string | undefined {
+    const metadata = legislation?.Metadata;
+    const typeMetadata = metadata?.PrimaryMetadata || metadata?.SecondaryMetadata || metadata?.EUMetadata;
+    return typeMetadata?.DocumentClassification?.DocumentStatus?.['@_Value'];
+  }
+
+  private extractStartDate(legislation: any): string | undefined {
+    return legislation?.['@_RestrictStartDate'];
+  }
+
+  private extractEndDate(legislation: any): string | undefined {
+    return legislation?.['@_RestrictEndDate'];
   }
 }

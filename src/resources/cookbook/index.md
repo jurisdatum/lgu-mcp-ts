@@ -1,0 +1,58 @@
+# Cookbook Index
+
+Step-by-step recipes for common tasks with UK legislation data.
+
+## Available Recipes
+
+### `cookbook://check-extent`
+**Check Geographical Extent of Legislation**
+
+Learn how to determine which jurisdictions (England, Wales, Scotland, Northern Ireland) a piece of legislation applies to.
+
+**What you'll learn:**
+- Using `get_legislation_metadata` to retrieve extent information
+- Interpreting extent codes (E, W, S, NI)
+- Understanding UK-wide vs. jurisdiction-specific legislation
+
+**Use cases:**
+- "Does this Act apply in Scotland?"
+- "Which parts of the UK does this regulation cover?"
+
+---
+
+### `cookbook://in-force-status`
+**Check In-Force Status of Legislation**
+
+Determine whether UK legislation is currently in force, prospective (not yet in force), or repealed.
+
+**What you'll learn:**
+- Using `get_legislation_metadata` to check in-force status
+- Interpreting `status`, `startDate`, and `endDate` fields
+- Handling edge cases (very new legislation, repealed legislation)
+
+**Use cases:**
+- "Is this Act in force?"
+- "When did this legislation come into force?"
+- "Has this been repealed?"
+
+**Current limitations:**
+- Document-level only (entire Acts/SIs)
+- Section-level support coming in future version
+
+---
+
+## Recipe Format
+
+Each recipe follows this structure:
+
+1. **Prerequisites** - What information you need before starting
+2. **Step-by-step instructions** - Clear, numbered steps
+3. **Examples** - Real-world examples with actual data
+4. **Complete workflow** - End-to-end demonstration
+5. **Decision logic** - Pseudocode for implementing the pattern
+6. **Limitations** - Current constraints and future enhancements
+7. **Related resources** - Links to relevant documentation
+
+## Contributing
+
+Recipes are based on real-world tasks that AI agents need to accomplish with UK legislation data. As we identify new common patterns, we'll add more recipes to this collection.

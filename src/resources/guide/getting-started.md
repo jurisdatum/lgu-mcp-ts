@@ -46,12 +46,19 @@ More efficient than fetching the full document when you only need metadata.
 
 ### Step-by-Step Recipes (Cookbook)
 
-Multi-step procedures for common tasks:
+**See `cookbook://index` for the complete catalog of recipes.**
+
+Common workflow recipes available:
 
 - **`cookbook://check-extent`** - Check geographical extent/applicability
   - "Does this Act apply to Scotland?"
   - Step-by-step guide from search to answer
   - Interpreting extent codes
+
+- **`cookbook://in-force-status`** - Check if legislation is in force
+  - "Is this Act currently in force?"
+  - "When did this come into force?"
+  - Document-level status checking with examples
 
 ### Reference Documentation
 

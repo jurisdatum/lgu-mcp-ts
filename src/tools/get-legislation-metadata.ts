@@ -23,8 +23,11 @@ Returned fields:
 - year: Year of enactment/making (number, e.g., 2020)
 - number: Legislation number (number, e.g., 2)
 - title: Human-readable title
+- status: Version status ("draft", "final", "revised", "proposed")
 - extent: Geographical extent as array (e.g., ["E", "W", "S", "NI"])
 - enactmentDate/madeDate: Key dates in YYYY-MM-DD format
+- startDate: When legislation came into force (only in "revised" versions)
+- endDate: When legislation was repealed (only if applicable)
 
 Common legislation types:
 - ukpga: UK Public General Acts (Acts of Parliament)
@@ -39,8 +42,14 @@ Examples:
 - get_legislation_metadata(type="ukpga", year="2020", number="2") → Metadata for Direct Payments to Farmers Act 2020
 - get_legislation_metadata(type="ukpga", year="2021", number="24") → Metadata for Fire Safety Act 2021
 - get_legislation_metadata(type="ukpga", year="2020", number="2", version="2024-01-01") → Metadata as it stood on 1 Jan 2024
+- get_legislation_metadata(type="ukpga", year="2025", number="1", version="enacted") → Original enacted version metadata
 
-The version parameter allows point-in-time queries to see metadata as it stood on a specific date.`;
+Version parameter:
+- Date (YYYY-MM-DD): Retrieve metadata as it stood on that date
+- "enacted": Original version for UK primary legislation (status="final")
+- "made": Original version for UK secondary legislation (status="final")
+- "created": Original version for uncommon UK types like Church Instruments (status="final")
+- "adopted": Original version for EU legislation (status="final")`;
 
 export const inputSchema = {
   type: "object",
@@ -59,7 +68,7 @@ export const inputSchema = {
     },
     version: {
       type: "string",
-      description: "Optional: Point-in-time date (YYYY-MM-DD) to retrieve metadata as it stood on that date",
+      description: "Optional: Version to retrieve - either a point-in-time date (YYYY-MM-DD) or a version keyword (enacted, made, created, adopted)",
     },
   },
   required: ["type", "year", "number"],

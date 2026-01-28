@@ -46,9 +46,12 @@ test('MetadataParser parses primary legislation metadata', () => {
   assert.strictEqual(result.year, 2020, 'Should extract year as number');
   assert.strictEqual(result.number, 2, 'Should extract number as number');
   assert.strictEqual(result.title, 'Direct Payments to Farmers (Legislative Continuity) Act 2020', 'Should extract title');
+  assert.strictEqual(result.status, 'revised', 'Should extract document status');
   assert.deepStrictEqual(result.extent, ['E', 'W', 'S', 'NI'], 'Should normalize extent (N.I. → NI)');
   assert.strictEqual(result.enactmentDate, '2020-01-30', 'Should extract enactment date');
   assert.strictEqual(result.madeDate, undefined, 'Should not have madeDate for primary legislation');
+  assert.strictEqual(result.startDate, '2024-01-01', 'Should extract start date from RestrictStartDate');
+  assert.strictEqual(result.endDate, undefined, 'Should not have end date if not repealed');
 });
 
 test('MetadataParser handles extent normalization', () => {
