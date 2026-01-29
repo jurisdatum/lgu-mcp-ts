@@ -45,8 +45,7 @@ Version parameter:
 - "enacted": Original version for UK primary legislation (Acts)
 - "made": Original version for UK secondary legislation (SIs, etc.)
 - "created": Original version for uncommon UK types (e.g., Church Instruments)
-- "adopted": Original version for EU legislation
-- All original versions have status="final" and lack in-force metadata`;
+- "adopted": Original version for EU legislation`;
 
 export const inputSchema = {
   type: "object",
@@ -70,7 +69,7 @@ export const inputSchema = {
     },
     version: {
       type: "string",
-      description: "Optional: Version to retrieve - either a point-in-time date (YYYY-MM-DD) or a version keyword (enacted, made, created, adopted)",
+      description: "Optional: Version to retrieve. Use enacted/made/created/adopted for original version, or YYYY-MM-DD for legislation as it stood on that date. Dates before first version return an error.",
     },
   },
   required: ["type", "year", "number"],

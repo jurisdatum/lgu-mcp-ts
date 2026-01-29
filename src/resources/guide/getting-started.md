@@ -55,6 +55,10 @@ Common workflow recipes available:
   - Step-by-step guide from search to answer
   - Interpreting extent codes
 
+- **`cookbook://point-in-time-version`** - Retrieve historical versions
+  - "Show me this Act as it stood on a specific date"
+  - Use `version` parameter for enacted/made or date-based retrieval
+
 ### Reference Documentation
 
 Read these resources to understand UK legislation data structures:

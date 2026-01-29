@@ -20,6 +20,22 @@ Learn how to determine which jurisdictions (England, Wales, Scotland, Northern I
 
 ---
 
+### `cookbook://point-in-time-version`
+**Point‑in‑Time Retrieval (Versioning)**
+
+Retrieve legislation as it stood on a specific date, or fetch the original enacted/made version.
+
+**What you'll learn:**
+- Using the `version` parameter with `get_legislation`
+- When to use `enacted` / `made` vs a date
+- How to compare versions safely
+
+**Use cases:**
+- "Show me this Act as it stood on 2024‑10‑18"
+- "Get the original enacted version of this Act"
+
+---
+
 ## Recipe Format
 
 Each recipe follows this structure:

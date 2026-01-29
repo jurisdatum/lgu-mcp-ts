@@ -91,6 +91,12 @@ To retrieve the full document for a search result:
 
 // Use with get_legislation (converts to strings)
 get_legislation(type="ukpga", year="2026", number="3")
+
+// Get legislation as it stood on a specific date
+get_legislation(type="ukpga", year="2026", number="3", version="2026-06-01")
+
+// Get original enacted version
+get_legislation(type="ukpga", year="2026", number="3", version="enacted")
 ```
 
 ## Future Enhancements
@@ -115,3 +121,4 @@ Pagination metadata may be added in a future version:
 - `json://metadata-response` - Detailed metadata format
 - `types://guide` - Legislation types reference
 - `cookbook://check-extent` - Example workflows using search
+- `cookbook://point-in-time-version` - Retrieving historical versions

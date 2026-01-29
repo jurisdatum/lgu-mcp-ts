@@ -66,7 +66,7 @@ export const inputSchema = {
     },
     version: {
       type: "string",
-      description: "Optional: Version to retrieve - either a point-in-time date (YYYY-MM-DD) or a version keyword (enacted, made, created, adopted)",
+      description: "Optional: Version to retrieve. Use enacted/made/created/adopted for original version, or YYYY-MM-DD for legislation as it stood on that date. Dates before first version return an error.",
     },
   },
   required: ["type", "year", "number"],

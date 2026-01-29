@@ -114,6 +114,12 @@ get_legislation_metadata(type="ukpga", year="2021", number="24")
 
 // Get full document
 get_legislation(type="ukpga", year="2021", number="24")
+
+// Get metadata for a specific version (as it stood on a date)
+get_legislation_metadata(type="ukpga", year="2021", number="24", version="2023-01-01")
+
+// Get original enacted version
+get_legislation_metadata(type="ukpga", year="2021", number="24", version="enacted")
 ```
 
 ## Related Resources
@@ -123,3 +129,4 @@ get_legislation(type="ukpga", year="2021", number="24")
 - `clml://schema-guide` - Full CLML XML structure
 - `types://guide` - Legislation types reference
 - `cookbook://check-extent` - Example workflow using metadata
+- `cookbook://point-in-time-version` - Retrieving historical versions
