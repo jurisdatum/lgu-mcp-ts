@@ -19,15 +19,19 @@ import {
 import * as getLegislation from "./tools/get-legislation.js";
 import * as getLegislationMetadata from "./tools/get-legislation-metadata.js";
 import * as searchLegislation from "./tools/search-legislation.js";
+import * as searchLegislationSemantic from "./tools/search-legislation-semantic.js";
+import * as searchLegislationSectionsSemantic from "./tools/search-legislation-sections-semantic.js";
 
 // Import API client
 import { LegislationClient } from "./api/legislation-client.js";
+import { LexClient } from "./api/lex-client.js";
 
 // Import resource loader
 import { ResourceLoader } from "./resources/resource-loader.js";
 
 // Initialize API client and resource loader
 const apiClient = new LegislationClient();
+const lexClient = new LexClient();
 const resourceLoader = new ResourceLoader();
 
 // Create MCP server
@@ -65,6 +69,16 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         description: getLegislationMetadata.description,
         inputSchema: getLegislationMetadata.inputSchema,
       },
+      {
+        name: searchLegislationSemantic.name,
+        description: searchLegislationSemantic.description,
+        inputSchema: searchLegislationSemantic.inputSchema,
+      },
+      {
+        name: searchLegislationSectionsSemantic.name,
+        description: searchLegislationSectionsSemantic.description,
+        inputSchema: searchLegislationSectionsSemantic.inputSchema,
+      },
     ],
   };
 });
@@ -85,6 +99,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       case getLegislationMetadata.name:
         return await getLegislationMetadata.execute(args as any, apiClient);
+
+      case searchLegislationSemantic.name:
+        return await searchLegislationSemantic.execute(args as any, lexClient);
+
+      case searchLegislationSectionsSemantic.name:
+        return await searchLegislationSectionsSemantic.execute(args as any, lexClient);
 
       default:
         throw new Error(`Unknown tool: ${name}`);
