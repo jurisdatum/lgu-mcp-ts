@@ -1,0 +1,153 @@
+/**
+ * MCP Server factory for UK Legislation
+ *
+ * Creates configured Server instances for use with different transports.
+ */
+
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import {
+  CallToolRequestSchema,
+  ListResourcesRequestSchema,
+  ListToolsRequestSchema,
+  ReadResourceRequestSchema,
+} from "@modelcontextprotocol/sdk/types.js";
+
+// Import tools
+import * as getLegislation from "./tools/get-legislation.js";
+import * as getLegislationMetadata from "./tools/get-legislation-metadata.js";
+import * as searchLegislation from "./tools/search-legislation.js";
+import * as searchLegislationSemantic from "./tools/search-legislation-semantic.js";
+import * as searchLegislationSectionsSemantic from "./tools/search-legislation-sections-semantic.js";
+
+// Import API clients
+import { LegislationClient } from "./api/legislation-client.js";
+import { LexClient } from "./api/lex-client.js";
+
+// Import resource loader
+import { ResourceLoader } from "./resources/resource-loader.js";
+
+// Shared instances
+const apiClient = new LegislationClient();
+const lexClient = new LexClient();
+const resourceLoader = new ResourceLoader();
+
+/**
+ * Creates a configured MCP server instance.
+ */
+export function createServer(): Server {
+  const server = new Server(
+    {
+      name: "legislation-gov-uk",
+      version: "0.1.0",
+    },
+    {
+      capabilities: {
+        tools: {},
+        resources: {},
+      },
+    }
+  );
+
+  // Handler: List available tools
+  server.setRequestHandler(ListToolsRequestSchema, async () => {
+    return {
+      tools: [
+        {
+          name: searchLegislation.name,
+          description: searchLegislation.description,
+          inputSchema: searchLegislation.inputSchema,
+        },
+        {
+          name: getLegislation.name,
+          description: getLegislation.description,
+          inputSchema: getLegislation.inputSchema,
+        },
+        {
+          name: getLegislationMetadata.name,
+          description: getLegislationMetadata.description,
+          inputSchema: getLegislationMetadata.inputSchema,
+        },
+        {
+          name: searchLegislationSemantic.name,
+          description: searchLegislationSemantic.description,
+          inputSchema: searchLegislationSemantic.inputSchema,
+        },
+        {
+          name: searchLegislationSectionsSemantic.name,
+          description: searchLegislationSectionsSemantic.description,
+          inputSchema: searchLegislationSectionsSemantic.inputSchema,
+        },
+      ],
+    };
+  });
+
+  // Handler: Execute a tool
+  server.setRequestHandler(CallToolRequestSchema, async (request) => {
+    const { name, arguments: args } = request.params;
+
+    try {
+      switch (name) {
+        case searchLegislation.name:
+          return await searchLegislation.execute(args as any, apiClient);
+
+        case getLegislation.name:
+          return await getLegislation.execute(args as any, apiClient);
+
+        case getLegislationMetadata.name:
+          return await getLegislationMetadata.execute(args as any, apiClient);
+
+        case searchLegislationSemantic.name:
+          return await searchLegislationSemantic.execute(args as any, lexClient);
+
+        case searchLegislationSectionsSemantic.name:
+          return await searchLegislationSectionsSemantic.execute(args as any, lexClient);
+
+        default:
+          throw new Error(`Unknown tool: ${name}`);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `Error executing tool: ${error.message}`,
+            },
+          ],
+          isError: true,
+        };
+      }
+      throw error;
+    }
+  });
+
+  // Handler: List available resources
+  server.setRequestHandler(ListResourcesRequestSchema, async () => {
+    return {
+      resources: resourceLoader.listResources(),
+    };
+  });
+
+  // Handler: Read a resource
+  server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
+    const { uri } = request.params;
+
+    try {
+      const resource = resourceLoader.readResource(uri);
+      return {
+        contents: [resource],
+      };
+    } catch (error) {
+      throw new Error(`Unknown resource: ${uri}`);
+    }
+  });
+
+  return server;
+}
+
+/**
+ * Returns the resource loader for logging purposes.
+ */
+export function getResourceLoader(): ResourceLoader {
+  return resourceLoader;
+}

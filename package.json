@@ -29,8 +29,10 @@
   "author": "The National Archives",
   "license": "OGL-UK-3.0",
   "dependencies": {
+    "@hono/node-server": "^1.19.9",
     "@modelcontextprotocol/sdk": "^1.0.4",
-    "fast-xml-parser": "^5.3.3"
+    "fast-xml-parser": "^5.3.3",
+    "hono": "^4.11.7"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

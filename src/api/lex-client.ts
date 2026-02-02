@@ -119,19 +119,13 @@ export class LexClient {
   async searchLegislation(
     request: LexLegislationActSearchRequest
   ): Promise<LexLegislationSearchResponse> {
-    return this.postJson<LexLegislationSearchResponse>(
-      "/legislation/search",
-      request
-    );
+    return this.postJson<LexLegislationSearchResponse>("/legislation/search", request);
   }
 
   async searchLegislationSections(
     request: LexLegislationSectionSearchRequest
   ): Promise<LexLegislationSection[]> {
-    return this.postJson<LexLegislationSection[]>(
-      "/legislation/section/search",
-      request
-    );
+    return this.postJson<LexLegislationSection[]>("/legislation/section/search", request);
   }
 
   private async postJson<T>(path: string, body: unknown): Promise<T> {
