@@ -21,9 +21,11 @@ Returned fields:
 - id: Legislation identifier (e.g., "ukpga/2018/12")
 - title: Act title
 - year, number, type: Citation components
-- sections: Best-matching sections (number, provision_type, score) - identifiers only, not text
+- sections: Best-matching sections (number, provision_type, score) - identifiers only, NOT the actual text
 
-To retrieve section text, use search_legislation_sections_semantic or get_legislation.`;
+To get section text after finding relevant Acts:
+- For specific sections: call search_legislation_sections_semantic with legislationId set to the Act's id (e.g., legislationId: "ukpga/2015/30")
+- For the full Act: use get_legislation`;
 
 export const inputSchema = {
   type: "object",

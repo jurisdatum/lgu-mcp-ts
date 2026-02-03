@@ -16,9 +16,9 @@ export const name = "search_legislation_sections_semantic";
 
 export const description = `Semantic search across legislation sections using a vector index.
 
-Returns individual sections ranked by relevance to your query.
+Returns individual sections ranked by relevance to your query, including the actual section text.
 
-Useful for finding relevant sections when you don't know the exact citation. Results may not match the live legislation.gov.uk dataset exactly.
+Results may not match the live legislation.gov.uk dataset exactly.
 
 Returned fields:
 - id: Section identifier
@@ -26,9 +26,13 @@ Returned fields:
 - text: Section text (unless includeText=false)
 - number, provision_type: Section metadata
 
+Two ways to use this tool:
+1. Broad search: Call with just a query to find relevant sections across all legislation
+2. Targeted retrieval: After using search_legislation_semantic to find relevant Acts, call this with legislationId (e.g., legislationId: "ukpga/2015/30") to get text for sections in that specific Act
+
 Notes:
-- Does not include Act title or other Act-level metadata. To get Act details, use get_legislation_metadata with type/year/number (parse from legislation_id), or use get_legislation.
-- Year filters (yearFrom/yearTo) do not work reliably for regnal-year legislation, because those URIs do not contain a calendar year.`;
+- Does not include Act title. To get Act details, use get_legislation_metadata or get_legislation.
+- Year filters (yearFrom/yearTo) do not work reliably for regnal-year legislation.`;
 
 export const inputSchema = {
   type: "object",
