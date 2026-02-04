@@ -58,14 +58,14 @@ export function createServer(): Server {
           inputSchema: searchLegislation.inputSchema,
         },
         {
-          name: getLegislation.name,
-          description: getLegislation.description,
-          inputSchema: getLegislation.inputSchema,
-        },
-        {
           name: getLegislationMetadata.name,
           description: getLegislationMetadata.description,
           inputSchema: getLegislationMetadata.inputSchema,
+        },
+        {
+          name: getLegislation.name,
+          description: getLegislation.description,
+          inputSchema: getLegislation.inputSchema,
         },
         {
           name: searchLegislationSemantic.name,
