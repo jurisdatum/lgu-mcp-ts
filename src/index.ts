@@ -27,7 +27,7 @@ async function startStdioServer(): Promise<void> {
   // Log to stderr (stdout is used for MCP communication)
   const resourceLoader = getResourceLoader();
   console.error("UK Legislation MCP Server (stdio mode)");
-  console.error("Tools: search_legislation, get_legislation, get_legislation_metadata");
+  console.error("Tools: search_legislation, get_legislation_metadata, get_legislation,");
   console.error("       search_legislation_semantic, search_legislation_sections_semantic");
   console.error("Resources loaded:");
   for (const resource of resourceLoader.listResources()) {

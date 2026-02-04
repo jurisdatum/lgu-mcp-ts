@@ -84,6 +84,15 @@ docker build -t legislation-mcp .
 docker run -e MCP_TRANSPORT=http -p 3000:3000 legislation-mcp
 ```
 
+To use semantic search with Docker, pass the semantic API configuration:
+```bash
+docker run \
+  -e MCP_TRANSPORT=http \
+  -e SEMANTIC_API_BASE_URL=http://host.docker.internal:8000 \
+  -p 3000:3000 \
+  legislation-mcp
+```
+
 ## Usage
 
 ### With MCP Inspector

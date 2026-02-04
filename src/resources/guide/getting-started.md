@@ -5,7 +5,7 @@ This MCP server provides tools and resources for working with UK legislation fro
 ## Quick Start: Basic Workflow
 
 1. **Search** for legislation by title or keyword using `search_legislation`
-2. **Parse** the Atom feed results to find relevant documents
+2. **Review** the search results (JSON by default) to find relevant documents
 3. **Retrieve** full documents using `get_legislation` with type/year/number
 4. **Parse** the CLML XML to extract specific provisions
 

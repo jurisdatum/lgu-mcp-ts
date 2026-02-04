@@ -35,7 +35,7 @@ Usage:
 - Use includeText=true to retrieve the actual section text (slower)
 
 Notes:
-- Does not include Act title. To get Act details, use get_legislation_metadata or get_legislation.
+- Does not include Act title, but provides legislation identifier (e.g., "ukpga/2018/12") which can be used directly with get_legislation_metadata to retrieve title and other details.
 - Year filters (yearFrom/yearTo) do not work reliably for regnal-year legislation.`;
 
 export const inputSchema = {
