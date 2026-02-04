@@ -7,8 +7,10 @@ Model Context Protocol (MCP) server providing AI assistants with access to UK le
 ### Tools
 
 - **search_legislation** - Search for legislation by title, text, type, or year
-- **get_legislation** - Retrieve full legislation documents in XML, Akoma Ntoso, or HTML formats
 - **get_legislation_metadata** - Get structured JSON metadata for legislation (experimental)
+- **get_legislation** - Retrieve full legislation documents in XML, Akoma Ntoso, or HTML formats
+- **search_legislation_semantic** - Semantic search across legislation using vector index (experimental)
+- **search_legislation_sections_semantic** - Semantic search across individual sections (experimental)
 
 ### Resources
 
@@ -30,6 +32,54 @@ npm run build
 ```
 
 **Note:** The build process generates a resource manifest from files in `src/resources/`. This manifest is required at runtime and is created automatically during the build.
+
+## Configuration
+
+### Environment Variables
+
+The server can be configured using environment variables:
+
+#### Semantic Search (Optional)
+
+- **`SEMANTIC_API_BASE_URL`** - Base URL for the semantic search API
+  - Default: `http://localhost:8000`
+  - Example: `https://semantic-api.example.com`
+
+- **`SEMANTIC_API_KEY`** - API key for semantic search authentication (if required)
+  - Default: None
+  - Example: `sk-xxx...`
+
+If semantic search is not configured, the semantic tools will fail with connection errors. The standard legislation.gov.uk tools work independently of semantic search configuration.
+
+#### Transport Mode
+
+- **`MCP_TRANSPORT`** - Communication transport (stdio or http)
+  - Default: `stdio`
+  - Options: `stdio`, `http`
+
+When using HTTP transport:
+- **`PORT`** - HTTP server port
+  - Default: `3000`
+
+### Example Configurations
+
+**Local Development (stdio):**
+```bash
+npm start
+```
+
+**Local Development with Semantic Search:**
+```bash
+SEMANTIC_API_BASE_URL=http://localhost:8000 npm start
+```
+
+**HTTP Transport (for remote access):**
+```bash
+MCP_TRANSPORT=http PORT=3000 npm start
+```
+
+**Docker Deployment:**
+See `docker-compose.yml` for HTTP transport configuration examples.
 
 ## Usage
 

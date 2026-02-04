@@ -9,6 +9,33 @@ This MCP server provides tools and resources for working with UK legislation fro
 3. **Retrieve** full documents using `get_legislation` with type/year/number
 4. **Parse** the CLML XML to extract specific provisions
 
+## Choosing the Right Tool
+
+### Search Tools: Which One to Use?
+
+| Use Case | Recommended Tool | Why |
+|----------|-----------------|-----|
+| Find legislation by exact title | `search_legislation` | Guaranteed current, official results |
+| Find recent/latest legislation | `search_legislation` | Real-time data from legislation.gov.uk |
+| Search by keyword or concept | `search_legislation_semantic` | Better at understanding meaning and intent |
+| Exploratory research across topics | `search_legislation_semantic` | Finds relevant sections across all legislation |
+| Find specific sections matching a concept | `search_legislation_sections_semantic` | Returns actual section text with relevance scores |
+| Critical legal research | `search_legislation` | Always verify semantic results here for accuracy |
+
+**Key Trade-offs:**
+- **Standard search** (`search_legislation`): Real-time, authoritative, exact matching
+- **Semantic search** (`search_legislation_semantic`, `search_legislation_sections_semantic`): Better conceptual matching but may be days/weeks behind live data
+
+### Retrieval Tools: Which One to Use?
+
+| Use Case | Recommended Tool | Why |
+|----------|-----------------|-----|
+| Just need title, dates, extent | `get_legislation_metadata` | Fast, lightweight JSON response |
+| Need specific section text | `get_legislation` | Full document with all provisions |
+| Building citations | `get_legislation_metadata` | Has all citation components |
+| Comparing versions over time | `get_legislation` with `version` | Point-in-time snapshots |
+| Human-readable display | `get_legislation` format="html" | Pre-rendered for reading |
+
 ## Available Tools
 
 ### `search_legislation`
@@ -41,6 +68,27 @@ Retrieve structured metadata for legislation:
 
 Returns clean JSON with extracted fields (title, extent, dates, etc.).
 More efficient than fetching the full document when you only need metadata.
+
+### `search_legislation_semantic` (Experimental)
+Semantic search across legislation using vector index:
+- `query`: Natural language query
+- `types`: Optional legislation type filter
+- `yearFrom`/`yearTo`: Optional year range
+- `limit`: Max results
+
+Returns Acts ranked by semantic relevance with best-matching section identifiers.
+**Note:** Searches a pre-computed index that may lag behind live data.
+
+### `search_legislation_sections_semantic` (Experimental)
+Semantic search across individual sections:
+- `query`: Natural language query
+- `types`: Optional legislation type filter
+- `yearFrom`/`yearTo`: Optional year range
+- `includeText`: Whether to include full section text
+- `limit`: Max results
+
+Returns sections ranked by semantic relevance with actual text.
+**Note:** Searches a pre-computed index that may lag behind live data.
 
 ## Available Resources
 
