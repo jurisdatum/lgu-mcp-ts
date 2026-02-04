@@ -105,12 +105,12 @@ export class LexClient {
   private apiKey?: string;
 
   constructor(options: LexClientOptions = {}) {
-    const envBaseUrl = process.env.LEX_API_BASE_URL;
+    const envBaseUrl = process.env.SEMANTIC_API_BASE_URL;
     this.baseUrl = (options.baseUrl ?? envBaseUrl ?? "http://localhost:8000").replace(
       /\/+$/,
       ""
     );
-    this.apiKey = options.apiKey ?? process.env.LEX_API_KEY;
+    this.apiKey = options.apiKey ?? process.env.SEMANTIC_API_KEY;
   }
 
   async searchLegislation(
