@@ -13,14 +13,22 @@ export const description = `Semantic search across legislation using a vector in
 
 Returns Acts ranked by relevance to your query, based on their best-matching sections.
 
-Results may not match the live legislation.gov.uk dataset exactly.
+IMPORTANT: This tool searches a pre-computed vector index that may not reflect the most recent legislation.
+The index is a snapshot and may be days or weeks behind the live legislation.gov.uk dataset. For critical
+research or to ensure you have the latest amendments, verify results against search_legislation or the
+live website.
 
 Returned fields:
 - id: Legislation identifier (e.g., "ukpga/2018/12")
 - title: Act title
 - year, number, type: Citation components
 - enactmentDate: When enacted (primary legislation only; secondary legislation dates not available)
-- sections: Best-matching sections (number, provisionType, score) - identifiers only, NOT the actual text
+- sections: Best-matching sections with:
+  - number: Section identifier (e.g., "1", "2A")
+  - provisionType: Type (e.g., "section", "regulation")
+  - score: Semantic similarity score (0.0-1.0, higher = more relevant)
+
+Note: Section identifiers only, NOT the actual text
 
 To get section text after finding relevant Acts:
 - Use search_legislation_sections_semantic to find sections across all legislation

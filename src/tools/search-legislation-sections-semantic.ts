@@ -17,7 +17,10 @@ export const description = `Semantic search across legislation sections using a 
 
 Returns individual sections ranked by relevance to your query, including the actual section text.
 
-Results may not match the live legislation.gov.uk dataset exactly.
+IMPORTANT: This tool searches a pre-computed vector index that may not reflect the most recent legislation.
+The index is a snapshot and may be days or weeks behind the live legislation.gov.uk dataset. For critical
+research or to ensure you have the latest amendments, verify results against search_legislation or the
+live website.
 
 Returned fields:
 - provisionId: Section identifier

@@ -6,6 +6,22 @@ Understanding the `restrictExtent` attribute in UK legislation XML.
 
 The `restrictExtent` attribute indicates the geographical extent of legislation - which parts of the UK (England, Wales, Scotland, Northern Ireland) a particular piece of legislation applies to.
 
+## Format Cross-Reference
+
+Extent is represented differently in CLML XML vs JSON responses:
+
+| CLML RestrictExtent | JSON extent array | Meaning |
+|---------------------|-------------------|---------|
+| `E+W` | `["E", "W"]` | England and Wales |
+| `E+W+S` | `["E", "W", "S"]` | Great Britain |
+| `E+W+S+N.I.` | `["E", "W", "S", "NI"]` | United Kingdom (all) |
+| `E` | `["E"]` | England only |
+| `W` | `["W"]` | Wales only |
+| `S` | `["S"]` | Scotland only |
+| `N.I.` | `["NI"]` | Northern Ireland only |
+
+**Note:** CLML uses `N.I.` (with period) but JSON normalizes to `NI` (no period).
+
 ## Common Values
 
 The `restrictExtent` attribute uses jurisdiction codes:
