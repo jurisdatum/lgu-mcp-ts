@@ -78,8 +78,11 @@ SEMANTIC_API_BASE_URL=http://localhost:8000 npm start
 MCP_TRANSPORT=http PORT=3000 npm start
 ```
 
-**Docker Deployment:**
-See `docker-compose.yml` for HTTP transport configuration examples.
+**Docker:**
+```bash
+docker build -t legislation-mcp .
+docker run -e MCP_TRANSPORT=http -p 3000:3000 legislation-mcp
+```
 
 ## Usage
 

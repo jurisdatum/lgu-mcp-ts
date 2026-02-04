@@ -19,7 +19,7 @@ This MCP server provides tools and resources for working with UK legislation fro
 | Find recent/latest legislation | `search_legislation` | Real-time data from legislation.gov.uk |
 | Search by keyword or concept | `search_legislation_semantic` | Better at understanding meaning and intent |
 | Exploratory research across topics | `search_legislation_semantic` | Finds relevant sections across all legislation |
-| Find specific sections matching a concept | `search_legislation_sections_semantic` | Returns actual section text with relevance scores |
+| Find specific sections matching a concept | `search_legislation_sections_semantic` | Returns individual sections ranked by relevance |
 | Critical legal research | `search_legislation` | Always verify semantic results here for accuracy |
 
 **Key Trade-offs:**
