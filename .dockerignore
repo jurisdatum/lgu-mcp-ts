@@ -1,0 +1,16 @@
+node_modules
+build
+npm-debug.log
+.git
+.gitignore
+/*.md
+!README.md
+docs
+CLAUDE.md
+.env
+.env.local
+.DS_Store
+coverage
+*.test.js
+test
+repro_issue*
