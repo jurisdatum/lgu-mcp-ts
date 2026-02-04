@@ -98,13 +98,11 @@ export interface LexLegislationSection {
 export interface LexClientOptions {
   baseUrl?: string;
   apiKey?: string;
-  userAgent?: string;
 }
 
 export class LexClient {
   private baseUrl: string;
   private apiKey?: string;
-  private userAgent?: string;
 
   constructor(options: LexClientOptions = {}) {
     const envBaseUrl = process.env.LEX_API_BASE_URL;
@@ -113,7 +111,6 @@ export class LexClient {
       ""
     );
     this.apiKey = options.apiKey ?? process.env.LEX_API_KEY;
-    this.userAgent = options.userAgent ?? process.env.LEX_API_USER_AGENT;
   }
 
   async searchLegislation(
@@ -134,10 +131,6 @@ export class LexClient {
       "Content-Type": "application/json",
       Accept: "application/json",
     };
-
-    if (this.userAgent) {
-      headers["User-Agent"] = this.userAgent;
-    }
 
     if (this.apiKey) {
       headers.Authorization = `Bearer ${this.apiKey}`;
