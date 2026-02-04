@@ -43,12 +43,12 @@ export interface LexLegislationActSectionMatch {
 }
 
 export interface LexLegislationActResult {
-  id: string;
+  id?: string;
   uri?: string;
   title: string;
   description?: string;
   text?: string;
-  enactment_date?: string;
+  enactment_date?: string; // Only populated for primary legislation
   valid_date?: string;
   modified_date?: string;
   publisher?: string;
@@ -57,7 +57,7 @@ export interface LexLegislationActResult {
   year?: number;
   number?: number;
   status?: string;
-  extent?: unknown[];
+  extent?: string[]; // Full country names: "England", "Wales", "Scotland", "Northern Ireland", "United Kingdom", or ""
   number_of_provisions?: number;
   provenance_source?: string | null;
   provenance_model?: string | null;
@@ -76,12 +76,12 @@ export interface LexLegislationSearchResponse {
 }
 
 export interface LexLegislationSection {
-  id: string;
+  id?: string;
   uri?: string;
-  legislation_id: string;
+  legislation_id?: string;
   title?: string;
   text?: string;
-  extent?: unknown[];
+  extent?: string[]; // Full country names: "England", "Wales", "Scotland", "Northern Ireland", "United Kingdom", or ""
   provision_type?: string;
   number?: number;
   legislation_type?: LexLegislationType;

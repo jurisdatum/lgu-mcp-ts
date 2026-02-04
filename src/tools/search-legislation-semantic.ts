@@ -4,10 +4,8 @@
  * Semantic search across legislation using the Lex API.
  */
 
-import {
-  LexClient,
-  LexLegislationSearchResponse,
-} from "../api/lex-client.js";
+import { LexClient } from "../api/lex-client.js";
+import { mapLegislationSearchResponse } from "../api/lex-mapper.js";
 
 export const name = "search_legislation_semantic";
 
@@ -21,10 +19,11 @@ Returned fields:
 - id: Legislation identifier (e.g., "ukpga/2018/12")
 - title: Act title
 - year, number, type: Citation components
-- sections: Best-matching sections (number, provision_type, score) - identifiers only, NOT the actual text
+- enactmentDate: When enacted (primary legislation only; secondary legislation dates not available)
+- sections: Best-matching sections (number, provisionType, score) - identifiers only, NOT the actual text
 
 To get section text after finding relevant Acts:
-- For specific sections: call search_legislation_sections_semantic with legislationId set to the Act's id (e.g., legislationId: "ukpga/2015/30")
+- Use search_legislation_sections_semantic to find sections across all legislation
 - For the full Act: use get_legislation`;
 
 export const inputSchema = {
@@ -55,42 +54,10 @@ export const inputSchema = {
       type: "number",
       description: "Max results (default: 10)",
     },
-    includeText: {
-      type: "boolean",
-      description: "Include section text in results (slower)",
-    },
   },
   required: ["query"],
 };
 
-export function normalizeId(value?: string): string | undefined {
-  if (!value) return undefined;
-  return value.replace(/^https?:\/\/www\.legislation\.gov\.uk\/(id\/)?/, "");
-}
-
-function normalizeSearchResponse(
-  response: LexLegislationSearchResponse
-): LexLegislationSearchResponse {
-  const results = response.results.map((result) => {
-    const normalized = { ...result };
-    const normalizedId = normalizeId(
-      typeof result.id === "string" ? result.id : undefined
-    );
-    const normalizedUri = normalizeId(
-      typeof result.uri === "string" ? result.uri : undefined
-    );
-
-    if (normalizedId) {
-      normalized.id = normalizedId;
-    } else if (normalizedUri) {
-      normalized.id = normalizedUri;
-    }
-
-    return normalized;
-  });
-
-  return { ...response, results };
-}
 
 export async function execute(
   args: {
@@ -100,7 +67,6 @@ export async function execute(
     yearTo?: number;
     offset?: number;
     limit?: number;
-    includeText?: boolean;
   },
   client: LexClient
 ) {
@@ -112,16 +78,15 @@ export async function execute(
       year_to: args.yearTo,
       offset: args.offset,
       limit: args.limit,
-      include_text: args.includeText,
     });
 
-    const normalized = normalizeSearchResponse(results);
+    const mapped = mapLegislationSearchResponse(results);
 
     return {
       content: [
         {
           type: "text",
-          text: JSON.stringify(normalized, null, 2),
+          text: JSON.stringify(mapped, null, 2),
         },
       ],
     };

@@ -4,13 +4,12 @@
  * Semantic search across legislation sections using the Lex API.
  */
 
-import {
-  LexClient,
-  LexLegislationCategory,
-  LexLegislationSection,
-} from "../api/lex-client.js";
+import { LexClient } from "../api/lex-client.js";
 
-import { normalizeId } from "./search-legislation-semantic.js";
+import {
+  mapLegislationSection,
+  type MappedLegislationSection,
+} from "../api/lex-mapper.js";
 
 export const name = "search_legislation_sections_semantic";
 
@@ -21,14 +20,16 @@ Returns individual sections ranked by relevance to your query, including the act
 Results may not match the live legislation.gov.uk dataset exactly.
 
 Returned fields:
-- id: Section identifier
-- legislation_id: Parent legislation (e.g., "ukpga/2018/12")
+- provisionId: Section identifier
+- provisionType: Section type (e.g., "section", "regulation")
+- number: Section number
+- legislation: Parent legislation object with id (e.g., "ukpga/2018/12"), type, year, number
 - text: Section text (unless includeText=false)
-- number, provision_type: Section metadata
+- extent: Geographical extent codes (e.g., ["E", "W"] for England and Wales)
 
-Two ways to use this tool:
-1. Broad search: Call with just a query to find relevant sections across all legislation
-2. Targeted retrieval: After using search_legislation_semantic to find relevant Acts, call this with legislationId (e.g., legislationId: "ukpga/2015/30") to get text for sections in that specific Act
+Usage:
+- Call with a query to find relevant sections across all legislation
+- Use includeText=true to retrieve the actual section text (slower)
 
 Notes:
 - Does not include Act title. To get Act details, use get_legislation_metadata or get_legislation.
@@ -41,19 +42,10 @@ export const inputSchema = {
       type: "string",
       description: "Natural language query for semantic section search",
     },
-    legislationId: {
-      type: "string",
-      description: "Optional legislation id to search within (e.g., ukpga/2018/12)",
-    },
     types: {
       type: "array",
       items: { type: "string" },
       description: "Legislation type codes (e.g., ukpga, uksi)",
-    },
-    categories: {
-      type: "array",
-      items: { type: "string", enum: ["primary", "secondary", "european", "euretained"] },
-      description: "High-level legislation categories",
     },
     yearFrom: {
       type: "number",
@@ -79,38 +71,10 @@ export const inputSchema = {
   required: ["query"],
 };
 
-function normalizeSection(section: LexLegislationSection): LexLegislationSection {
-  const normalized = { ...section };
-
-  const normalizedId = normalizeId(
-    typeof section.id === "string" ? section.id : undefined
-  );
-  const normalizedUri = normalizeId(
-    typeof section.uri === "string" ? section.uri : undefined
-  );
-  const normalizedLegislationId = normalizeId(
-    typeof section.legislation_id === "string" ? section.legislation_id : undefined
-  );
-
-  if (normalizedId) {
-    normalized.id = normalizedId;
-  } else if (normalizedUri) {
-    normalized.id = normalizedUri;
-  }
-
-  if (normalizedLegislationId) {
-    normalized.legislation_id = normalizedLegislationId;
-  }
-
-  return normalized;
-}
-
 export async function execute(
   args: {
     query: string;
-    legislationId?: string;
     types?: string[];
-    categories?: LexLegislationCategory[];
     yearFrom?: number;
     yearTo?: number;
     offset?: number;
@@ -122,9 +86,7 @@ export async function execute(
   try {
     const results = await client.searchLegislationSections({
       query: args.query,
-      legislation_id: args.legislationId,
       legislation_type: args.types,
-      legislation_category: args.categories,
       year_from: args.yearFrom,
       year_to: args.yearTo,
       offset: args.offset,
@@ -132,13 +94,13 @@ export async function execute(
       include_text: args.includeText,
     });
 
-    const normalized = results.map(normalizeSection);
+    const mapped: MappedLegislationSection[] = results.map(mapLegislationSection);
 
     return {
       content: [
         {
           type: "text",
-          text: JSON.stringify(normalized, null, 2),
+          text: JSON.stringify(mapped, null, 2),
         },
       ],
     };
