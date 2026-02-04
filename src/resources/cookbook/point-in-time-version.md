@@ -100,15 +100,92 @@ This Act has multiple versions:
 
 **Note:** The enacted version and the first revised version often have identical text. The revised version usually adds editorial metadata (such as extent or status attributes).
 
+## Understanding Version Types
+
+### What is "Enacted" vs "Revised"?
+
+**Enacted Version (`version="enacted"` or `version="made"`):**
+- The original text as passed by Parliament (for Acts) or made (for SIs)
+- Published immediately after Royal Assent or making
+- May lack some editorial enhancements
+- Sometimes missing extent or status information that's added later
+- For primary legislation, use `"enacted"`
+- For secondary legislation (SIs), use `"made"`
+
+**Revised/Current Version (no version parameter):**
+- The legislation as currently in force
+- Includes all amendments applied to date
+- Has complete editorial metadata (extent, status, etc.)
+- This is what most users need for current legal research
+
+**Point-in-Time Version (`version="YYYY-MM-DD"`):**
+- Snapshot of legislation as it stood on a specific date
+- Shows all amendments that were in force on that date
+- Useful for historical research or understanding how law evolved
+
+### Why Are Enacted and First Revised Often Identical?
+
+When legislation is first enacted:
+1. **Enacted version** is published immediately with the original text
+2. **First revised version** is published shortly after with editorial improvements:
+   - Added `RestrictExtent` attributes showing geographical scope
+   - Added `Status` attributes ("Prospective", "In Force", etc.)
+   - Enhanced cross-reference links
+   - Improved XML structure
+
+The *text* is usually identical, but the *metadata* is more complete in the revised version.
+
+**Example:** Data Protection Act 2018
+- **Enacted version:** Published May 23, 2018 - basic XML structure
+- **First revised version:** Published a few days later - same text, but with:
+  - Extent codes on each provision
+  - Commencement status markers
+  - Enhanced table of contents
+
+### Status Field Values
+
+The `status` field in metadata can have these values:
+
+| Status | Meaning | When to Expect |
+|--------|---------|---------------|
+| `"final"` | Legislation is enacted and available | Most common status |
+| `"revised"` | Legislation has been editorially enhanced | After initial publication |
+| `"draft"` | Proposed legislation not yet enacted | Pre-enactment only |
+| `"proposed"` | Under consideration | Pre-enactment only |
+
+**Note:** Despite the name, "revised" status doesn't mean the law has been amended - it means the *XML document* has been editorially improved.
+
 ## Interpreting Versions
 
 ### When to use `enacted` / `made`
-- You want the **original published text**
-- You want the unedited version as issued by the publishing system
+
+Use when you want:
+- The **original published text** exactly as passed/made
+- To cite the original unamended version
+- To compare original text against current version
+- Historical research showing Parliament's original intent
+
+**Example use case:** "What did section 10 say when the Act was first passed?"
 
 ### When to use a date
-- You want the legislation **as it stood** on that date
-- You need changes after commencement or amendments
+
+Use when you want:
+- The legislation **as it stood** on a specific historical date
+- To see what amendments were in force at that time
+- To reconstruct past legal landscape
+- Comparative analysis over time
+
+**Example use case:** "What did the data protection law say on January 1, 2020, before GDPR changes?"
+
+### When to use no version parameter (current)
+
+Use when you want:
+- The **current law** as it stands today
+- Most recent amendments applied
+- Most common use case for legal research
+- Complete metadata and editorial enhancements
+
+**Example use case:** "What does the law say now?"
 
 ## Decision Logic (Pseudocode)
 

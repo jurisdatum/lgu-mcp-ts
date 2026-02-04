@@ -36,6 +36,25 @@ Retrieve legislation as it stood on a specific date, or fetch the original enact
 
 ---
 
+### `cookbook://semantic-search-workflow`
+**Semantic Search Workflow (Experimental)**
+
+Use semantic search to find relevant legislation by concept, then verify and retrieve full documents.
+
+**What you'll learn:**
+- When to use semantic vs standard search
+- Understanding similarity scores
+- Filtering by type and year
+- Verifying semantic results against live data
+- Complete workflows for exploration and targeted research
+
+**Use cases:**
+- "Find all sections about data subject rights"
+- "Explore employment legislation dealing with unfair dismissal"
+- "Compare approaches to education standards across jurisdictions"
+
+---
+
 ## Recipe Format
 
 Each recipe follows this structure:
