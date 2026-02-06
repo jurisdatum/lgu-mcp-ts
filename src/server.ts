@@ -14,6 +14,7 @@ import {
 
 // Import tools
 import * as getLegislation from "./tools/get-legislation.js";
+import * as getLegislationFragment from "./tools/get-legislation-fragment.js";
 import * as getLegislationMetadata from "./tools/get-legislation-metadata.js";
 import * as searchLegislation from "./tools/search-legislation.js";
 import * as searchLegislationSemantic from "./tools/search-legislation-semantic.js";
@@ -68,6 +69,11 @@ export function createServer(): Server {
           inputSchema: getLegislation.inputSchema,
         },
         {
+          name: getLegislationFragment.name,
+          description: getLegislationFragment.description,
+          inputSchema: getLegislationFragment.inputSchema,
+        },
+        {
           name: searchLegislationSemantic.name,
           description: searchLegislationSemantic.description,
           inputSchema: searchLegislationSemantic.inputSchema,
@@ -92,6 +98,9 @@ export function createServer(): Server {
 
         case getLegislation.name:
           return await getLegislation.execute(args as any, apiClient);
+
+        case getLegislationFragment.name:
+          return await getLegislationFragment.execute(args as any, apiClient);
 
         case getLegislationMetadata.name:
           return await getLegislationMetadata.execute(args as any, apiClient);

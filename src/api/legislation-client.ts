@@ -58,6 +58,31 @@ export class LegislationClient {
   }
 
   /**
+   * Retrieve a specific fragment of a legislation document
+   * Returns CLML XML by default, Akoma Ntoso if requested, or HTML
+   *
+   * Fragments can be Parts, Chapters, Cross-Headings, Sections, or Subsections.
+   * The fragmentId should be a path like "section/5" or "part/1/chapter/2".
+   */
+  async getFragment(
+    type: string,
+    year: string,
+    number: string,
+    fragmentId: string,
+    options: {
+      format?: "xml" | "akn" | "html";
+      version?: string; // Point-in-time date (YYYY-MM-DD)
+    } = {}
+  ): Promise<string> {
+    const { format = "xml", version } = options;
+
+    const versionPath = version ? `/${version}` : "";
+    const url = `${this.baseUrl}/${type}/${year}/${number}${versionPath}/${fragmentId}/data.${format}`;
+
+    return this.fetchText(url);
+  }
+
+  /**
    * Search for legislation by various criteria
    * Returns Atom feed (XML format)
    */
