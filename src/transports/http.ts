@@ -4,6 +4,7 @@
  * Based on the MCP SDK's Hono example.
  */
 
+import { timingSafeEqual } from "node:crypto";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { serve } from "@hono/node-server";
@@ -12,6 +13,7 @@ import { createServer, getResourceLoader } from "../server.js";
 
 export interface HttpAppOptions {
   transport?: WebStandardStreamableHTTPServerTransport;
+  serverKey?: string;
 }
 
 /**
@@ -19,7 +21,7 @@ export interface HttpAppOptions {
  * Exported for testing.
  */
 export function createHttpApp(options: HttpAppOptions = {}): Hono {
-  const { transport } = options;
+  const { transport, serverKey } = options;
 
   const app = new Hono();
 
@@ -31,6 +33,7 @@ export function createHttpApp(options: HttpAppOptions = {}): Hono {
       allowMethods: ["GET", "POST", "DELETE", "OPTIONS"],
       allowHeaders: [
         "Content-Type",
+        "Authorization",
         "mcp-session-id",
         "Last-Event-ID",
         "mcp-protocol-version",
@@ -39,8 +42,27 @@ export function createHttpApp(options: HttpAppOptions = {}): Hono {
     })
   );
 
-  // Health check
+  // Health check (always unauthenticated)
   app.get("/health", (c) => c.json({ status: "ok" }));
+
+  // Bearer token auth when MCP_SERVER_KEY is set
+  if (serverKey) {
+    const keyBuffer = Buffer.from(serverKey);
+    app.use("*", async (c, next) => {
+      const auth = c.req.header("Authorization") ?? "";
+      const match = auth.match(/^Bearer\s+(.+)$/i);
+      const token = match?.[1];
+      const tokenBuffer = token ? Buffer.from(token) : Buffer.alloc(0);
+      if (
+        token &&
+        tokenBuffer.length === keyBuffer.length &&
+        timingSafeEqual(tokenBuffer, keyBuffer)
+      ) {
+        return next();
+      }
+      return c.text("Unauthorized", 401, { "WWW-Authenticate": "Bearer" });
+    });
+  }
 
   // MCP endpoint - handles GET, POST, DELETE
   if (transport) {
@@ -61,7 +83,8 @@ export async function startHttpServer(): Promise<void> {
   const transport = new WebStandardStreamableHTTPServerTransport();
 
   // Create Hono app
-  const app = createHttpApp({ transport });
+  const serverKey = process.env.MCP_SERVER_KEY;
+  const app = createHttpApp({ transport, serverKey });
 
   // Connect server to transport
   await mcpServer.connect(transport);
@@ -71,6 +94,7 @@ export async function startHttpServer(): Promise<void> {
   console.log(`UK Legislation MCP Server (HTTP mode)`);
   console.log(`Health check: http://localhost:${port}/health`);
   console.log(`MCP endpoint: http://localhost:${port}/mcp`);
+  console.log(`Authentication: ${serverKey ? "enabled (MCP_SERVER_KEY)" : "disabled"}`);
   console.log("Resources loaded:");
   for (const resource of resourceLoader.listResources()) {
     console.log(`  - ${resource.uri}`);
