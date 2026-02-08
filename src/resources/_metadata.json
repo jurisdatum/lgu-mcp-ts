@@ -23,12 +23,20 @@
     "cookbook": {
       "name": "Cookbook Recipes",
       "description": "Step-by-step workflows for common tasks"
+    },
+    "years": {
+      "name": "Regnal Years",
+      "description": "Reference data for historical regnal year identifiers used in pre-1963 legislation"
     }
   },
   "resources": {
     "clml://metadata/extent": {
       "name": "Geographical Extent in CLML",
       "description": "Understanding restrictExtent attributes and territorial application of UK legislation"
+    },
+    "years://regnal": {
+      "name": "Regnal Years Reference Data",
+      "description": "CSV mapping of regnal year identifiers (e.g. Vict/50) to reign, year of reign, and calendar date ranges. Pre-1963 legislation is canonically identified by regnal year, though calendar years usually work too via API redirect. Use regnal years to disambiguate when a calendar year spans two regnal years."
     }
   }
 }

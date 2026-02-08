@@ -4,7 +4,7 @@
  * Retrieve structured metadata for a specific piece of UK legislation
  */
 
-import { LegislationClient } from "../api/legislation-client.js";
+import { LegislationClient, LegislationResponse } from "../api/legislation-client.js";
 import { MetadataParser } from "../parsers/metadata-parser.js";
 
 export const name = "get_legislation_metadata";
@@ -41,6 +41,7 @@ Examples:
 - get_legislation_metadata(type="ukpga", year="2021", number="24") → Metadata for Fire Safety Act 2021
 - get_legislation_metadata(type="ukpga", year="2020", number="2", version="2024-01-01") → Metadata as it stood on 1 Jan 2024
 - get_legislation_metadata(type="ukpga", year="2025", number="1", version="enacted") → Original enacted version metadata
+- get_legislation_metadata(type="ukpga", year="Vict/63", number="52") → Metadata for a Victorian-era Act
 
 Version parameter:
 - Date (YYYY-MM-DD): Retrieve metadata as it stood on that date
@@ -58,7 +59,7 @@ export const inputSchema = {
     },
     year: {
       type: "string",
-      description: "Year of enactment (e.g., 2020)",
+      description: "Year of enactment. A 4-digit calendar year (e.g., 2020) works for all legislation. For pre-1963 Acts, the canonical identifier uses a regnal year in Reign/Number format (e.g., Vict/63, Geo5/26) — but a calendar year will usually work too, as the API redirects. Use regnal years when you need to disambiguate (a calendar year can span two regnal years). See the years://regnal resource for valid identifiers.",
     },
     number: {
       type: "string",
@@ -84,11 +85,15 @@ export async function execute(
   const { type, year, number, version } = args;
 
   // Fetch metadata XML
-  const xml = await client.getDocumentMetadata(type, year, number, { version });
+  const result = await client.getDocumentMetadata(type, year, number, { version });
+
+  if (result.kind === "disambiguation") {
+    return formatDisambiguation(result);
+  }
 
   // Parse to structured JSON
   const parser = new MetadataParser();
-  const metadata = parser.parse(xml);
+  const metadata = parser.parse(result.content);
 
   return {
     content: [
@@ -97,5 +102,20 @@ export async function execute(
         text: JSON.stringify(metadata, null, 2)
       }
     ]
+  };
+}
+
+function formatDisambiguation(result: Extract<LegislationResponse, { kind: "disambiguation" }>) {
+  const list = result.alternatives
+    .map(a => `- ${a.title} → use year="${a.year}", number="${a.number}"`)
+    .join("\n");
+  return {
+    content: [
+      {
+        type: "text" as const,
+        text: `Ambiguous request: the calendar year matched multiple regnal years. Retry with a specific regnal year:\n${list}`,
+        annotations: { audience: ["assistant" as const], priority: 1 },
+      },
+    ],
   };
 }

@@ -4,7 +4,7 @@
  * Retrieve a specific piece of UK legislation by citation
  */
 
-import { LegislationClient } from "../api/legislation-client.js";
+import { LegislationClient, LegislationResponse } from "../api/legislation-client.js";
 
 export const name = "get_legislation";
 
@@ -39,6 +39,7 @@ Examples:
 - get_legislation(type="ukpga", year="2025", number="1", version="enacted") → Original enacted version
 - get_legislation(type="ukpga", year="1968", number="60", format="akn") → Akoma Ntoso XML format
 - get_legislation(type="ukpga", year="1968", number="60", format="html") → HTML rendering
+- get_legislation(type="ukpga", year="Vict/63", number="52") → A Victorian-era Act in CLML XML
 
 Version parameter:
 - Date (YYYY-MM-DD): Retrieve legislation as it stood on that date
@@ -56,7 +57,7 @@ export const inputSchema = {
     },
     year: {
       type: "string",
-      description: "Year of enactment (e.g., 2020, 1968)",
+      description: "Year of enactment. A 4-digit calendar year (e.g., 2020) works for all legislation. For pre-1963 Acts, the canonical identifier uses a regnal year in Reign/Number format (e.g., Vict/63, Geo5/26) — but a calendar year will usually work too, as the API redirects. Use regnal years when you need to disambiguate (a calendar year can span two regnal years). See the years://regnal resource for valid identifiers.",
     },
     number: {
       type: "string",
@@ -88,17 +89,21 @@ export async function execute(
   const { type, year, number, format = "xml", version } = args;
 
   try {
-    const document = await client.getDocument(type, year, number, {
+    const result = await client.getDocument(type, year, number, {
       format,
       version,
     });
+
+    if (result.kind === "disambiguation") {
+      return formatDisambiguation(result);
+    }
 
     // Return XML/HTML as-is (already a string from the API)
     return {
       content: [
         {
           type: "text",
-          text: typeof document === "string" ? document : JSON.stringify(document, null, 2),
+          text: result.content,
         },
       ],
     };
@@ -116,4 +121,19 @@ export async function execute(
     }
     throw error;
   }
+}
+
+function formatDisambiguation(result: Extract<LegislationResponse, { kind: "disambiguation" }>) {
+  const list = result.alternatives
+    .map(a => `- ${a.title} → use year="${a.year}", number="${a.number}"`)
+    .join("\n");
+  return {
+    content: [
+      {
+        type: "text" as const,
+        text: `Ambiguous request: the calendar year matched multiple regnal years. Retry with a specific regnal year:\n${list}`,
+        annotations: { audience: ["assistant" as const], priority: 1 },
+      },
+    ],
+  };
 }

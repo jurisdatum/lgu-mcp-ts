@@ -43,7 +43,7 @@ function scanDirectory(dir, baseDir = dir) {
       resources.push(...scanDirectory(fullPath, baseDir));
     } else if (stat.isFile()) {
       const ext = parse(entry).ext;
-      if (ext === '.md' || ext === '.json') {
+      if (ext === '.md' || ext === '.json' || ext === '.csv') {
         resources.push(processFile(fullPath, baseDir));
       }
     }
@@ -73,7 +73,9 @@ function processFile(filePath, baseDir) {
   const uri = uriPath ? `${namespace}://${uriPath}` : `${namespace}://${parsed.name}`;
 
   // Detect MIME type
-  const mimeType = parsed.ext === '.json' ? 'application/json' : 'text/markdown';
+  const mimeType = parsed.ext === '.json' ? 'application/json'
+    : parsed.ext === '.csv' ? 'text/csv'
+    : 'text/markdown';
 
   // Read file content
   const content = readFileSync(filePath, 'utf-8');

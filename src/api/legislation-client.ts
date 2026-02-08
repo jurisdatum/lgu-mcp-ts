@@ -8,6 +8,18 @@
  * other formats like Atom feeds or RDF.
  */
 
+export interface DisambiguationAlternative {
+  id: string;
+  title: string;
+  type: string;
+  year: string;
+  number: string;
+}
+
+export type LegislationResponse =
+  | { kind: "document"; content: string }
+  | { kind: "disambiguation"; alternatives: DisambiguationAlternative[] };
+
 export class LegislationClient {
   private baseUrl = "https://www.legislation.gov.uk";
 
@@ -23,13 +35,13 @@ export class LegislationClient {
       format?: "xml" | "akn" | "html";
       version?: string; // Point-in-time date (YYYY-MM-DD)
     } = {}
-  ): Promise<string> {
+  ): Promise<LegislationResponse> {
     const { format = "xml", version } = options;
 
     const versionPath = version ? `/${version}` : "";
     const url = `${this.baseUrl}/${type}/${year}/${number}${versionPath}/data.${format}`;
 
-    return this.fetchText(url);
+    return this.fetchDocument(url);
   }
 
   /**
@@ -48,13 +60,13 @@ export class LegislationClient {
     options: {
       version?: string; // Point-in-time date (YYYY-MM-DD)
     } = {}
-  ): Promise<string> {
+  ): Promise<LegislationResponse> {
     const { version } = options;
 
     const versionPath = version ? `/${version}` : "";
     const url = `${this.baseUrl}/${type}/${year}/${number}${versionPath}/resources/data.xml`;
 
-    return this.fetchText(url);
+    return this.fetchDocument(url);
   }
 
   /**
@@ -73,13 +85,13 @@ export class LegislationClient {
       format?: "xml" | "akn" | "html";
       version?: string; // Point-in-time date (YYYY-MM-DD)
     } = {}
-  ): Promise<string> {
+  ): Promise<LegislationResponse> {
     const { format = "xml", version } = options;
 
     const versionPath = version ? `/${version}` : "";
     const url = `${this.baseUrl}/${type}/${year}/${number}${versionPath}/${fragmentId}/data.${format}`;
 
-    return this.fetchText(url);
+    return this.fetchDocument(url);
   }
 
   /**
@@ -109,7 +121,48 @@ export class LegislationClient {
   }
 
   /**
+   * Fetch helper for document responses that may return HTTP 300 (Multiple Choices)
+   * when a calendar year is ambiguous across regnal years.
+   */
+  private async fetchDocument(url: string): Promise<LegislationResponse> {
+    try {
+      const response = await fetch(url, {
+        headers: {
+          "User-Agent": "legislation-mcp-server/0.1.0"
+        }
+      });
+
+      if (response.status === 300) {
+        const body = await response.text();
+        const alternatives = this.parseAlternatives(body);
+        if (alternatives.length > 0) {
+          return { kind: "disambiguation", alternatives };
+        }
+      }
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error(`Not found: ${url}`);
+        }
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      return { kind: "document", content: await response.text() };
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(`Failed to fetch ${url}: ${error.message}`);
+      }
+      throw error;
+    }
+  }
+
+  private parseAlternatives(html: string): DisambiguationAlternative[] {
+    return parseDisambiguationHtml(html);
+  }
+
+  /**
    * Fetch helper for text responses (XML, HTML)
+   * Used by search, which does not encounter 300 responses.
    */
   private async fetchText(url: string): Promise<string> {
     try {
@@ -134,4 +187,27 @@ export class LegislationClient {
       throw error;
     }
   }
+}
+
+/**
+ * Parse alternatives from an HTTP 300 Multiple Choices HTML response.
+ * The response contains a list of links to the canonical documents
+ * identified by regnal year.
+ */
+export function parseDisambiguationHtml(html: string): DisambiguationAlternative[] {
+  const results: DisambiguationAlternative[] = [];
+  const regex = /<li>\s*<a href="([^"]+)">([^<]+)<\/a>\s*<\/li>/g;
+  let match;
+  while ((match = regex.exec(html)) !== null) {
+    const href = match[1];
+    const title = match[2];
+    // href is like "/ukpga/Geo5/4-5/1" — type is first segment, number is last
+    const parts = href.split("/").filter(Boolean);
+    const id = parts.join("/");
+    const type = parts[0];
+    const number = parts[parts.length - 1];
+    const year = parts.slice(1, -1).join("/");
+    results.push({ id, title, type, year, number });
+  }
+  return results;
 }
