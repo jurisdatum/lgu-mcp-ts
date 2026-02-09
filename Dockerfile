@@ -42,9 +42,7 @@ ENV PORT=8080
 # Expose the port
 EXPOSE 8080
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:8080/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1))"
+# No HEALTHCHECK — App Runner ignores it and uses its own health check config
 
 # Start the server
 CMD ["node", "build/index.js"]
