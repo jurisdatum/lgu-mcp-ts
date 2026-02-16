@@ -27,6 +27,10 @@
     "years": {
       "name": "Regnal Years",
       "description": "Reference data for historical regnal year identifiers used in pre-1963 legislation"
+    },
+    "text": {
+      "name": "Text Format",
+      "description": "Documentation for the plain text output format converted from CLML XML"
     }
   },
   "resources": {
