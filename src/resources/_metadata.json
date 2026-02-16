@@ -14,7 +14,7 @@
     },
     "json": {
       "name": "JSON Response Formats",
-      "description": "Documentation for experimental JSON response formats (search and metadata)"
+      "description": "Documentation for JSON response formats (search, metadata, table of contents, and semantic search)"
     },
     "types": {
       "name": "Legislation Types",
