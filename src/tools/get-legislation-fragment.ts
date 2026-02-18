@@ -17,7 +17,7 @@ Use get_legislation_table_of_contents to discover fragment IDs. Common fragmentI
 
 Version: use a date (\`YYYY-MM-DD\`) for a point-in-time snapshot, or \`enacted\`/\`made\`/\`created\`/\`adopted\` for the original version.
 
-See: types://guide, cookbook://point-in-time-version`;
+See: \`types://guide\`, \`cookbook://point-in-time-version\``;
 
 export const inputSchema = {
   type: "object",

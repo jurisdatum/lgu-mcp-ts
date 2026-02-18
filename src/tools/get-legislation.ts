@@ -19,7 +19,7 @@ Common types: \`ukpga\` (Acts), \`uksi\` (SIs), \`asp\` (Scottish Acts), \`asc\`
 
 Version: use a date (\`YYYY-MM-DD\`) for a point-in-time snapshot, or \`enacted\`/\`made\`/\`created\`/\`adopted\` for the original version.
 
-See: types://guide, cookbook://point-in-time-version, text://format-guide`;
+See: \`types://guide\`, \`cookbook://point-in-time-version\`, \`text://format-guide\``;
 
 export const inputSchema = {
   type: "object",

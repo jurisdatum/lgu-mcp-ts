@@ -15,7 +15,7 @@ Note: The index is a snapshot and may lag behind live legislation.gov.uk. Verify
 
 Returns section identifiers only, not text. Use \`search_legislation_sections_semantic\` for section text, or \`get_legislation\` for the full Act.
 
-See: cookbook://semantic-search-workflow`;
+See: \`cookbook://semantic-search-workflow\`, \`json://semantic-search-response\``;
 
 export const inputSchema = {
   type: "object",

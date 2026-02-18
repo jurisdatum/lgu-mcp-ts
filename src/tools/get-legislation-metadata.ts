@@ -15,7 +15,7 @@ Returns JSON with: \`id\`, \`type\`, \`year\`, \`number\`, \`title\`, \`status\`
 
 Version: use a date (\`YYYY-MM-DD\`) for a point-in-time snapshot, or \`enacted\`/\`made\`/\`created\`/\`adopted\` for the original version.
 
-See: types://guide, cookbook://point-in-time-version, cookbook://check-extent`;
+See: \`types://guide\`, \`cookbook://point-in-time-version\`, \`cookbook://check-extent\`, \`json://metadata-response\``;
 
 export const inputSchema = {
   type: "object",

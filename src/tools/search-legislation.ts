@@ -13,7 +13,7 @@ export const description = `Search for UK legislation by keyword, title, or othe
 
 Results include: \`id\`, \`type\`, \`year\`, \`number\`, \`title\`, and \`date\`. Use \`title\` for title search, \`text\` for full-text search. Filter by \`type\`, \`year\`, or \`startYear\`/\`endYear\` range.
 
-See: types://guide`;
+See: \`types://guide\`, \`json://search-response\`, \`atom://feed-guide\``;
 
 export const inputSchema = {
   type: "object",

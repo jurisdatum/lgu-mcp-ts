@@ -15,7 +15,7 @@ Shows the hierarchical structure (Parts, Chapters, Sections) with headings and f
 
 Version: use a date (\`YYYY-MM-DD\`) for a point-in-time snapshot, or \`enacted\`/\`made\`/\`created\`/\`adopted\` for the original version.
 
-See: types://guide, cookbook://point-in-time-version`;
+See: \`types://guide\`, \`cookbook://point-in-time-version\`, \`json://table-of-contents-response\``;
 
 export const inputSchema = {
   type: "object",

@@ -17,7 +17,7 @@ export const description = `Semantic search across individual legislation sectio
 
 Note: The index is a snapshot and may lag behind live legislation.gov.uk. Verify critical results with \`search_legislation\`. Does not include Act titles — use \`get_legislation_metadata\` to look up titles by identifier.
 
-See: cookbook://semantic-search-workflow`;
+See: \`cookbook://semantic-search-workflow\`, \`json://semantic-section-response\``;
 
 export const inputSchema = {
   type: "object",
