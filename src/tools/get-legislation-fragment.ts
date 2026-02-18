@@ -9,37 +9,15 @@ import { CLMLTextParser } from "../parsers/clml-text-parser.js";
 
 export const name = "get_legislation_fragment";
 
-export const description = `Retrieve a specific fragment (section, part, chapter, etc.) of a UK legislation document.
+export const description = `Retrieve a fragment (section, part, chapter, etc.) of a UK legislation document. Returns readable plain text by default (\`text\`). Also available: \`xml\` (CLML with full metadata), \`akn\` (Akoma Ntoso), \`html\`.
 
-Fetches structural portions of legislation from legislation.gov.uk. Returns readable plain text by default. Use get_legislation_table_of_contents to discover fragment IDs.
+Text is best for reading and summarisation. It discards semantic markup, amendment commentaries, and structural metadata — use \`xml\` to track amendments, follow cross-references, or check in-force status.
 
-Available formats:
-- text (default): Readable plain text with markdown-inspired headings and structure
-- xml: CLML (Crown Legislation Markup Language) - full legislative XML with metadata
-- akn: Akoma Ntoso - international LegalDocML standard
-- html: Rendered HTML
+Use get_legislation_table_of_contents to discover fragment IDs. Common fragmentId patterns: \`section/1\`, \`part/2\`, \`part/1/chapter/3\`, \`regulation/5\`, \`crossheading/name\`. The API does not support fragment IDs deeper than the section or regulation level (e.g. \`section/1/a\` is not a valid ID).
 
-Fragment types supported:
-- section: Individual sections (e.g., "section/5")
-- part: Parts of legislation (e.g., "part/1")
-- chapter: Chapters within parts (e.g., "part/1/chapter/2")
-- crossheading: Cross-headings (e.g., "crossheading/example")
-- Hierarchical combinations (e.g., "part/2/chapter/3/section/10")
-- regulation: For statutory instruments (e.g., "regulation/5")
+Version: use a date (\`YYYY-MM-DD\`) for a point-in-time snapshot, or \`enacted\`/\`made\`/\`created\`/\`adopted\` for the original version.
 
-Note: The legislation.gov.uk API does not support retrieval below the Subsection level.
-
-Examples:
-- get_legislation_fragment(type="ukpga", year="1968", number="60", fragmentId="section/1") → Section 1 of Theft Act 1968
-- get_legislation_fragment(type="ukpga", year="2020", number="1", fragmentId="part/2/chapter/1") → Part 2, Chapter 1
-- get_legislation_fragment(type="ukpga", year="2020", number="1", fragmentId="section/10", version="2023-01-01") → As it stood on 1 Jan 2023
-
-Version parameter:
-- Date (YYYY-MM-DD): Retrieve fragment as it stood on that date
-- "enacted": Original version for UK primary legislation (Acts)
-- "made": Original version for UK secondary legislation (SIs, etc.)
-- "created": Original version for uncommon UK types (e.g., Church Instruments)
-- "adopted": Original version for EU legislation`;
+See: types://guide, cookbook://point-in-time-version`;
 
 export const inputSchema = {
   type: "object",

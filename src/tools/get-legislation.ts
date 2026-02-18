@@ -9,32 +9,17 @@ import { CLMLTextParser } from "../parsers/clml-text-parser.js";
 
 export const name = "get_legislation";
 
-export const description = `Retrieve a specific piece of UK legislation by citation.
+export const description = `Retrieve a full UK legislation document by type, year, and number. Returns readable plain text by default (\`text\`). Also available: \`xml\` (CLML with full metadata), \`akn\` (Akoma Ntoso), \`html\`.
 
-Fetches full legislation documents from legislation.gov.uk by their type, year, and number. Returns readable plain text by default.
+Text is best for reading and summarisation. It discards semantic markup, amendment commentaries, and structural metadata — use \`xml\` to track amendments, follow cross-references, or check in-force status.
 
-For large documents, consider using get_legislation_table_of_contents first, then get_legislation_fragment to retrieve specific sections.
+For large documents, use get_legislation_table_of_contents first, then get_legislation_fragment for specific sections.
 
-Available formats:
-- text (default): Readable plain text with markdown-inspired headings and structure
-- xml: CLML (Crown Legislation Markup Language) - full legislative XML with metadata
-- akn: Akoma Ntoso - international LegalDocML standard
-- html: Rendered HTML
+Common types: \`ukpga\` (Acts), \`uksi\` (SIs), \`asp\` (Scottish Acts), \`asc\` (Welsh Acts), \`nia\` (NI Acts).
 
-Common legislation types: ukpga (UK Public General Acts), uksi (UK Statutory Instruments), asp (Acts of the Scottish Parliament), asc (Acts of Senedd Cymru), nia (Northern Ireland Acts).
+Version: use a date (\`YYYY-MM-DD\`) for a point-in-time snapshot, or \`enacted\`/\`made\`/\`created\`/\`adopted\` for the original version.
 
-Examples:
-- get_legislation(type="ukpga", year="1968", number="60") → Theft Act 1968
-- get_legislation(type="uksi", year="2020", number="1234") → A Statutory Instrument
-- get_legislation(type="ukpga", year="2020", number="1", version="2023-01-01") → As it stood on 1 Jan 2023
-- get_legislation(type="ukpga", year="2025", number="1", version="enacted") → Original enacted version
-
-Version parameter:
-- Date (YYYY-MM-DD): Retrieve legislation as it stood on that date
-- "enacted": Original version for UK primary legislation (Acts)
-- "made": Original version for UK secondary legislation (SIs, etc.)
-- "created": Original version for uncommon UK types (e.g., Church Instruments)
-- "adopted": Original version for EU legislation`;
+See: types://guide, cookbook://point-in-time-version, text://format-guide`;
 
 export const inputSchema = {
   type: "object",
