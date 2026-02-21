@@ -19,7 +19,7 @@ This MCP server provides tools and resources for working with UK legislation fro
 | Use Case | Tool |
 |----------|------|
 | Read or summarise legislation | `get_legislation` — returns plain text by default |
-| Browse structure of a large document | `get_legislation_table_of_contents` — then use `get_legislation_fragment` for specific sections |
+| Browse structure of a large document | `get_legislation_table_of_contents`, then `get_legislation_fragment` for specific sections |
 | Get title, dates, extent only | `get_legislation_metadata` — fast, lightweight JSON |
 | Track amendments or cross-references | `get_legislation` with `format="xml"` — full CLML with semantic markup |
 | Compare versions over time | Any retrieval tool with `version` param — date or `enacted`/`made` |
@@ -27,9 +27,7 @@ This MCP server provides tools and resources for working with UK legislation fro
 ## Important Things to Know
 
 - **Plain text is the default** for `get_legislation` and `get_legislation_fragment`. It's best for reading and summarisation. Use `format="xml"` when you need amendment annotations, cross-references, or in-force status.
-- **Use table of contents + fragments for large documents.** Don't fetch a whole Act when you only need one section.
 - **Pre-1963 legislation uses regnal years** (e.g. `Vict/63`) as canonical identifiers. Calendar years usually work via API redirect, but use regnal years to disambiguate. See `years://regnal`.
-- **Search returns 20 results per page.** Use the `page` parameter to paginate; check `meta.morePages` in the response.
 - **Legislation types** span multiple jurisdictions — Acts (`ukpga`, `asp`, `asc`, `nia`), Statutory Instruments (`uksi`, `ssi`, `wsi`), retained EU law (`eur`, `eudr`), and more. See `types://guide`.
 - For common errors and edge cases, see `guide://troubleshooting`.
 - For background on UK legislative structures, see https://www.legislation.gov.uk/understanding-legislation.
