@@ -700,7 +700,16 @@ function findFragmentTarget(doc: XMLDocument): Element | null {
   if (!parsed?.fragment) return null;
 
   const targetId = parsed.fragment.replace(/\//g, '-');
-  return findElementById(doc.documentElement, targetId);
+  const target = findElementById(doc.documentElement, targetId);
+  if (!target) return null;
+
+  // If the target is a P1 inside a P1group, use the group (which carries the title)
+  const parent = target.parentNode as Element | null;
+  if (target.localName === 'P1' && parent?.localName === 'P1group') {
+    return parent;
+  }
+
+  return target;
 }
 
 function findElementById(node: Element, id: string): Element | null {

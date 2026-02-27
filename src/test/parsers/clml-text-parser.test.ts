@@ -656,9 +656,9 @@ test('fragment: parses only the target section, skipping ancestor headings', () 
           <Part id="part-1">
             <Number>Part 1</Number>
             <Title>Introduction</Title>
-            <P1group id="section-1">
+            <P1group>
               <Title>Overview</Title>
-              <P1>
+              <P1 id="section-1">
                 <Pnumber>1</Pnumber>
                 <P1para>
                   <Text>This Act makes provision about examples.</Text>
@@ -672,8 +672,9 @@ test('fragment: parses only the target section, skipping ancestor headings', () 
 
   const result = parseToText(xml);
 
-  assert.ok(result.includes('Section 1) **Overview**'), 'Should include target section heading');
+  assert.ok(result.includes('Section 1) **Overview**'), 'Should capture P1group title when id is on P1');
   assert.ok(result.includes('This Act makes provision about examples.'), 'Should include section text');
+  assert.ok(!result.startsWith('1)'), 'Should NOT render as bare provision without title');
   assert.ok(!result.includes('## Part 1'), 'Should NOT include ancestor Part heading');
   assert.ok(!result.includes('## Introduction'), 'Should NOT include ancestor Part title');
 });
@@ -691,9 +692,9 @@ test('fragment: full document with no fragment parses from root', () => {
           <Part id="part-1">
             <Number>Part 1</Number>
             <Title>Introduction</Title>
-            <P1group id="section-1">
+            <P1group>
               <Title>Overview</Title>
-              <P1>
+              <P1 id="section-1">
                 <Pnumber>1</Pnumber>
                 <P1para>
                   <Text>This Act makes provision about examples.</Text>
@@ -726,9 +727,9 @@ test('fragment: uses first dc:identifier when multiple exist', () => {
           <Part id="part-1">
             <Number>Part 1</Number>
             <Title>Introduction</Title>
-            <P1group id="section-2">
+            <P1group>
               <Title>Definitions</Title>
-              <P1>
+              <P1 id="section-2">
                 <Pnumber>2</Pnumber>
                 <P1para>
                   <Text>In this Act, the following terms apply.</Text>
@@ -759,9 +760,9 @@ test('fragment: falls back to root when target ID not found', () => {
           <Part id="part-1">
             <Number>Part 1</Number>
             <Title>Introduction</Title>
-            <P1group id="section-1">
+            <P1group>
               <Title>Overview</Title>
-              <P1>
+              <P1 id="section-1">
                 <Pnumber>1</Pnumber>
                 <P1para>
                   <Text>This Act makes provision about examples.</Text>
